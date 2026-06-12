@@ -243,7 +243,107 @@ select:focus { border-color: var(--purple); }
   user-select: none;
 }
 
-/* EDIT MODAL */
+/* LOGIN SCREEN */
+.login-screen {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+}
+.login-screen.visible { display: flex; }
+.login-box {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 40px 36px;
+  width: 360px;
+  max-width: 95vw;
+  animation: slideUp 0.2s ease;
+}
+.login-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 42px;
+  letter-spacing: 4px;
+  color: var(--amber);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.login-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--dim);
+  margin-bottom: 32px;
+}
+.login-box label {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 7px;
+}
+.login-box input[type="email"],
+.login-box input[type="password"] {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 11px 14px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  margin-bottom: 18px;
+}
+.login-box input[type="email"]:focus,
+.login-box input[type="password"]:focus { border-color: var(--purple); }
+.login-box input::placeholder { color: var(--dim); }
+.btn-login {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--amber);
+  background: var(--amber-dim);
+  color: var(--amber);
+  transition: all 0.15s;
+  margin-top: 4px;
+}
+.btn-login:hover { background: rgba(240,168,50,0.22); }
+.login-error {
+  font-size: 12px;
+  color: var(--coral);
+  font-family: 'DM Mono', monospace;
+  margin-top: 12px;
+  min-height: 18px;
+  text-align: center;
+}
+
+/* LOGOUT BUTTON */
+.btn-logout {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--dim);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.5px;
+}
+.btn-logout:hover { border-color: var(--coral); color: var(--coral); }
+
+
 .modal-bg {
   display: none;
   position: fixed;
@@ -392,6 +492,20 @@ select:focus { border-color: var(--purple); }
 </head>
 <body>
 
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">VaporTrails</div>
+    <div class="login-sub">FLOWER JOURNAL</div>
+    <label>Email</label>
+    <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email">
+    <label>Password</label>
+    <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
+    <button class="btn-login" onclick="doLogin()">Sign In</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
 <header class="header">
   <div>
     <div class="logo">VaporTrails</div>
@@ -401,6 +515,7 @@ select:focus { border-color: var(--purple); }
     <div class="stat-pill"><strong id="stat-total">0</strong> strains</div>
     <div class="stat-pill"><strong id="stat-great" style="color:var(--teal)">0</strong> 🔥</div>
     <div class="stat-pill"><strong id="stat-ng" style="color:var(--coral)">0</strong> 🗑️</div>
+    <button class="btn-logout" onclick="doLogout()">Sign Out</button>
   </div>
 </header>
 
@@ -1206,8 +1321,51 @@ document.getElementById('modal').addEventListener('click', function(e) {
   document.getElementById(id).addEventListener('change', render);
 });
 
-// Boot
-loadData();
+// ── Auth ──────────────────────────────────────────────────────────────────────
+
+function showApp()   { document.getElementById('login-screen').classList.remove('visible'); }
+function showLogin() { document.getElementById('login-screen').classList.add('visible'); }
+
+async function doLogin() {
+  const email    = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  const errEl    = document.getElementById('login-error');
+  errEl.textContent = '';
+
+  if (!email || !password) { errEl.textContent = 'Email and password required.'; return; }
+
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+  if (error) { errEl.textContent = error.message; return; }
+  // onAuthStateChange will fire and load the app
+}
+
+async function doLogout() {
+  await sb.auth.signOut();
+  data = [];
+  document.getElementById('list-body').innerHTML = '';
+  showLogin();
+}
+
+// Enter key on password field triggers login
+document.getElementById('login-password').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+// Listen for auth state changes — single source of truth for app visibility
+sb.auth.onAuthStateChange((_event, session) => {
+  if (session) {
+    showApp();
+    loadData();
+  } else {
+    showLogin();
+  }
+});
+
+// Boot — check for existing session
+sb.auth.getSession().then(({ data: { session } }) => {
+  if (session) { showApp(); loadData(); }
+  else { showLogin(); }
+});
 </script>
 </body>
 </html>

@@ -134,20 +134,137 @@ select {
   transition: border-color 0.2s;
 }
 select:focus { border-color: var(--purple); }
-.sort-group { display: flex; gap: 6px; align-items: center; margin-left: auto; }
-.sort-btn {
+
+/* FILTER BUTTON */
+.btn-filter {
   background: var(--bg3);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border2);
   border-radius: 8px;
   color: var(--muted);
-  font-size: 12px;
-  font-family: 'DM Mono', monospace;
-  padding: 7px 14px;
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  padding: 9px 18px;
   cursor: pointer;
   transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
 }
-.sort-btn:hover { border-color: var(--border2); color: var(--text); }
-.sort-btn.active { background: var(--purple-dim); border-color: var(--purple); color: var(--purple); }
+.btn-filter:hover { border-color: var(--purple); color: var(--text); }
+.btn-filter.active { background: var(--purple-dim); border-color: var(--purple); color: var(--purple); }
+.filter-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--amber);
+  display: none;
+}
+.btn-filter.active .filter-dot { display: block; }
+
+/* FILTER PANEL MODAL */
+.filter-panel-bg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 200;
+  align-items: flex-start;
+  justify-content: flex-end;
+  backdrop-filter: blur(3px);
+  padding: 72px 20px 20px;
+}
+.filter-panel-bg.open { display: flex; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  padding: 24px;
+  width: 300px;
+  max-width: 95vw;
+  animation: slideUp 0.18s ease;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+.filter-panel h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+.filter-section {
+  margin-bottom: 20px;
+}
+.filter-section label {
+  display: block;
+  font-size: 10px;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.chip {
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  padding: 5px 12px;
+  border-radius: 100px;
+  border: 1px solid var(--border2);
+  background: var(--bg3);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+}
+.chip:hover { color: var(--text); border-color: var(--border2); }
+.chip.on { background: var(--purple-dim); border-color: var(--purple); color: var(--purple); }
+.chip.on-great { background: var(--teal-dim); border-color: var(--teal); color: var(--teal); }
+.chip.on-ok { background: rgba(45,180,100,0.12); border-color: rgba(45,180,100,0.3); color: #4dc87a; }
+.chip.on-ng { background: var(--coral-dim); border-color: var(--coral); color: var(--coral); }
+
+.filter-brand-select {
+  width: 100%;
+  margin-bottom: 0;
+}
+.filter-panel-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+.btn-clear-filters {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  border: 1px solid var(--border2);
+  background: var(--bg3);
+  color: var(--muted);
+  transition: all 0.15s;
+}
+.btn-clear-filters:hover { color: var(--text); }
+.btn-apply-filters {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--purple);
+  background: var(--purple-dim);
+  color: var(--purple);
+  transition: all 0.15s;
+}
+.btn-apply-filters:hover { background: rgba(167,139,250,0.2); }
+
 
 /* RESULT COUNT */
 .result-bar {
@@ -169,7 +286,7 @@ select:focus { border-color: var(--purple); }
   flex-direction: column;
 }
 
-/* Column header row */
+/* Column header row — sortable */
 .list-header {
   display: grid;
   grid-template-columns: 1fr 1fr 80px 48px;
@@ -183,6 +300,27 @@ select:focus { border-color: var(--purple); }
   border-bottom: 1px solid var(--border);
   margin-bottom: 2px;
   margin-top: 8px;
+}
+.col-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.15s;
+  padding-right: 8px;
+}
+.col-header:hover { color: var(--text); }
+.col-header.sorted { color: var(--purple); }
+.col-header.sorted .sort-arrow { opacity: 1; }
+.sort-arrow {
+  opacity: 0;
+  font-size: 9px;
+  transition: opacity 0.15s;
+}
+.col-header-rating {
+  justify-content: center;
+  padding-right: 0;
 }
 
 /* ROW */
@@ -524,30 +662,52 @@ select:focus { border-color: var(--purple); }
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     <input type="text" id="search" placeholder="Search strain or brand…">
   </div>
-  <select id="filter-rating">
-    <option value="">All ratings</option>
-    <option value="Great">🔥 Fire</option>
-    <option value="OK">🌿 Fresh</option>
-    <option value="NG">🗑️ Trash</option>
-    <option value="unrated">— Unrated</option>
-  </select>
-  <select id="filter-type">
-    <option value="">All types</option>
-    <option value="I">Indica (I)</option>
-    <option value="H">Hybrid (H)</option>
-    <option value="S">Sativa (S)</option>
-    <option value="I-H">Indica-Hybrid (I-H)</option>
-    <option value="S-H">Sativa-Hybrid (S-H)</option>
-  </select>
-  <select id="filter-brand">
-    <option value="">All brands</option>
-  </select>
-  <div class="sort-group">
-    <button class="sort-btn active" id="sort-brand" onclick="setSort('brand')">Brand</button>
-    <button class="sort-btn" id="sort-strain" onclick="setSort('strain')">Strain</button>
-    <button class="sort-btn" id="sort-rating" onclick="setSort('rating')">Rating</button>
-  </div>
+  <button class="btn-filter" id="btn-filter" onclick="openFilterPanel()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+    Filter
+    <span class="filter-dot" id="filter-dot"></span>
+  </button>
   <button class="btn-add" onclick="openAdd()">+ Add Strain</button>
+</div>
+
+<!-- FILTER PANEL -->
+<div class="filter-panel-bg" id="filter-panel-bg" onclick="if(event.target===this) closeFilterPanel()">
+  <div class="filter-panel">
+    <h3>Filters</h3>
+
+    <div class="filter-section">
+      <label>Rating</label>
+      <div class="chip-group">
+        <div class="chip" id="chip-great" onclick="toggleChip('great')">🔥 Fire</div>
+        <div class="chip" id="chip-ok"    onclick="toggleChip('ok')">🌿 Fresh</div>
+        <div class="chip" id="chip-ng"    onclick="toggleChip('ng')">🗑️ Trash</div>
+        <div class="chip" id="chip-unrated" onclick="toggleChip('unrated')">— Unrated</div>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <label>Type</label>
+      <div class="chip-group">
+        <div class="chip" id="chip-I"   onclick="toggleChip('I')">Indica</div>
+        <div class="chip" id="chip-H"   onclick="toggleChip('H')">Hybrid</div>
+        <div class="chip" id="chip-S"   onclick="toggleChip('S')">Sativa</div>
+        <div class="chip" id="chip-IH"  onclick="toggleChip('IH')">I-Hybrid</div>
+        <div class="chip" id="chip-SH"  onclick="toggleChip('SH')">S-Hybrid</div>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <label>Brand</label>
+      <select id="filter-brand" class="filter-brand-select">
+        <option value="">All brands</option>
+      </select>
+    </div>
+
+    <div class="filter-panel-actions">
+      <button class="btn-clear-filters" onclick="clearFilters()">Clear All</button>
+      <button class="btn-apply-filters" onclick="closeFilterPanel()">Done</button>
+    </div>
+  </div>
 </div>
 
 <div class="result-bar">
@@ -556,10 +716,10 @@ select:focus { border-color: var(--purple); }
 
 <div class="list">
   <div class="list-header">
-    <div>Brand</div>
-    <div>Strain</div>
-    <div>Type</div>
-    <div style="text-align:center">Rating</div>
+    <div class="col-header" id="col-brand"  onclick="setSort('brand')">Brand <span class="sort-arrow" id="arrow-brand">▲</span></div>
+    <div class="col-header" id="col-strain" onclick="setSort('strain')">Strain <span class="sort-arrow" id="arrow-strain">▲</span></div>
+    <div class="col-header" id="col-type"   onclick="setSort('type')">Type <span class="sort-arrow" id="arrow-type">▲</span></div>
+    <div class="col-header col-header-rating" id="col-rating" onclick="setSort('rating')">Rating <span class="sort-arrow" id="arrow-rating">▲</span></div>
   </div>
   <div id="list-body"></div>
 </div>
@@ -1121,7 +1281,6 @@ function hideStatus() {
 // ── Brand filter ──────────────────────────────────────────────────────────────
 function populateBrandFilter() {
   const brandSel = document.getElementById('filter-brand');
-  // clear all but first option
   while (brandSel.options.length > 1) brandSel.remove(1);
   const brands = [...new Set(data.map(d => d.brand).filter(Boolean))].sort();
   brands.forEach(b => {
@@ -1129,48 +1288,131 @@ function populateBrandFilter() {
     o.value = b; o.textContent = b;
     brandSel.appendChild(o);
   });
+  brandSel.addEventListener('change', render);
 }
 
-function setSort(s) {
-  currentSort = s;
-  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('sort-' + s).classList.add('active');
+// ── Sort ──────────────────────────────────────────────────────────────────────
+let sortDir = 'asc';
+
+function setSort(col) {
+  if (currentSort === col) {
+    sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+  } else {
+    currentSort = col;
+    sortDir = 'asc';
+  }
+  updateSortHeaders();
   render();
 }
 
+function updateSortHeaders() {
+  ['brand','strain','type','rating'].forEach(col => {
+    const el = document.getElementById('col-' + col);
+    const arrow = document.getElementById('arrow-' + col);
+    if (!el) return;
+    el.classList.toggle('sorted', currentSort === col);
+    if (currentSort === col) {
+      arrow.textContent = sortDir === 'asc' ? '▲' : '▼';
+    }
+  });
+}
+
+// ── Filter state ──────────────────────────────────────────────────────────────
+const activeChips = new Set(); // 'great','ok','ng','unrated','I','H','S','IH','SH'
+
+function toggleChip(key) {
+  if (activeChips.has(key)) activeChips.delete(key);
+  else activeChips.add(key);
+  updateChipUI();
+  render();
+}
+
+function updateChipUI() {
+  const map = {
+    great: 'on-great', ok: 'on-ok', ng: 'on-ng', unrated: 'on',
+    I: 'on', H: 'on', S: 'on', IH: 'on', SH: 'on'
+  };
+  Object.keys(map).forEach(key => {
+    const el = document.getElementById('chip-' + key);
+    if (!el) return;
+    el.classList.remove('on','on-great','on-ok','on-ng');
+    if (activeChips.has(key)) el.classList.add(map[key]);
+  });
+  // Update filter button active state
+  const hasFilters = activeChips.size > 0 || document.getElementById('filter-brand').value;
+  document.getElementById('btn-filter').classList.toggle('active', !!hasFilters);
+}
+
+function openFilterPanel() {
+  document.getElementById('filter-panel-bg').classList.add('open');
+}
+function closeFilterPanel() {
+  document.getElementById('filter-panel-bg').classList.remove('open');
+  // update filter button dot after closing
+  const hasFilters = activeChips.size > 0 || document.getElementById('filter-brand').value;
+  document.getElementById('btn-filter').classList.toggle('active', !!hasFilters);
+}
+
+function clearFilters() {
+  activeChips.clear();
+  document.getElementById('filter-brand').value = '';
+  updateChipUI();
+  render();
+}
+
+// ── Filtering ─────────────────────────────────────────────────────────────────
 function getFiltered() {
   const q = document.getElementById('search').value.toLowerCase().trim();
-  const ratingF = document.getElementById('filter-rating').value;
-  const typeF = document.getElementById('filter-type').value;
   const brandF = document.getElementById('filter-brand').value;
+
+  // Which ratings are active?
+  const ratingChips = ['great','ok','ng','unrated'].filter(k => activeChips.has(k));
+  // Which types are active?
+  const typeChips   = ['I','H','S','IH','SH'].filter(k => activeChips.has(k));
+  const typeValues  = { I:'I', H:'H', S:'S', IH:'I-H', SH:'S-H' };
 
   return data.filter(d => {
     if (q && !d.strain.toLowerCase().includes(q) && !d.brand.toLowerCase().includes(q)) return false;
-    if (typeF && d.type !== typeF) return false;
     if (brandF && d.brand !== brandF) return false;
-    if (ratingF) {
-      if (ratingF === 'unrated') { if (d.rating !== '') return false; }
-      else if (ratingF === 'Great' && d.rating !== 'Great') return false;
-      else if (ratingF === 'OK' && d.rating !== 'OK') return false;
-      else if (ratingF === 'NG' && d.rating !== 'NG') return false;
+
+    if (ratingChips.length) {
+      const match = ratingChips.some(k => {
+        if (k === 'great')   return d.rating === 'Great';
+        if (k === 'ok')      return d.rating === 'OK';
+        if (k === 'ng')      return d.rating === 'NG';
+        if (k === 'unrated') return d.rating === '';
+        return false;
+      });
+      if (!match) return false;
     }
+
+    if (typeChips.length) {
+      const match = typeChips.some(k => d.type === typeValues[k]);
+      if (!match) return false;
+    }
+
     return true;
   });
 }
 
+// ── Sorting ───────────────────────────────────────────────────────────────────
 function getSorted(arr) {
   const ratingOrder = { 'Great': 0, 'OK': 1, 'NG': 2, '': 3 };
+  const typeOrder   = { 'I': 0, 'I-H': 1, 'H': 2, 'S-H': 3, 'S': 4, '': 5 };
+  const dir = sortDir === 'asc' ? 1 : -1;
+
   return [...arr].sort((a, b) => {
+    let cmp = 0;
     if (currentSort === 'brand') {
-      return a.brand.localeCompare(b.brand) || a.strain.localeCompare(b.strain);
+      cmp = a.brand.localeCompare(b.brand) || a.strain.localeCompare(b.strain);
+    } else if (currentSort === 'strain') {
+      cmp = a.strain.localeCompare(b.strain);
+    } else if (currentSort === 'rating') {
+      cmp = (ratingOrder[a.rating] ?? 3) - (ratingOrder[b.rating] ?? 3) || a.brand.localeCompare(b.brand);
+    } else if (currentSort === 'type') {
+      cmp = (typeOrder[a.type] ?? 5) - (typeOrder[b.type] ?? 5) || a.brand.localeCompare(b.brand);
     }
-    if (currentSort === 'strain') {
-      return a.strain.localeCompare(b.strain);
-    }
-    if (currentSort === 'rating') {
-      return (ratingOrder[a.rating] ?? 3) - (ratingOrder[b.rating] ?? 3) || a.brand.localeCompare(b.brand);
-    }
-    return 0;
+    return cmp * dir;
   });
 }
 
@@ -1296,7 +1538,7 @@ async function saveEntry() {
     data.push(entry);
     // Add to brand filter if new
     const brandSel = document.getElementById('filter-brand');
-    if (brand && !brandSel.querySelector(`option[value="${CSS.escape(brand)}"]`)) {
+    if (brand && !Array.from(brandSel.options).some(o => o.value === brand)) {
       const o = document.createElement('option');
       o.value = brand; o.textContent = brand;
       brandSel.appendChild(o);
@@ -1315,11 +1557,11 @@ document.getElementById('modal').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
 
-// Wire filters
-['search','filter-rating','filter-type','filter-brand'].forEach(id => {
-  document.getElementById(id).addEventListener('input', render);
-  document.getElementById(id).addEventListener('change', render);
-});
+// Wire search
+document.getElementById('search').addEventListener('input', render);
+
+// Init sort header state
+updateSortHeaders();
 
 // ── Auth ──────────────────────────────────────────────────────────────────────
 

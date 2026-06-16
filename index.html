@@ -9,29 +9,29 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0f1f1c;
-  --bg2: #162f2a;
-  --bg3: #1e453e;
-  --surface: #1a3832;
-  --surface2: #224d45;
+  --bg: #0d0d12;
+  --bg2: #13131c;
+  --bg3: #1a1a27;
+  --surface: #1e1e2e;
+  --surface2: #252538;
   --border: rgba(255,255,255,0.07);
-  --border2: rgba(255,255,255,0.13);
-  --text: #edeae4;
-  --muted: #7a9e8e;
-  --dim: #4a6e5e;
+  --border2: rgba(255,255,255,0.12);
+  --text: #e8e6f0;
+  --muted: #7a789a;
+  --dim: #4a4868;
   --amber: #f0a832;
-  --amber-dim: rgba(240,168,50,0.13);
-  --teal: #6ddbb0;
-  --teal-dim: rgba(109,219,176,0.12);
-  --coral: #f07070;
-  --coral-dim: rgba(240,112,112,0.12);
-  --purple: #b39dfa;
-  --purple-dim: rgba(179,157,250,0.14);
-  --c-I:   #b39dfa; --c-I-dim:   rgba(179,157,250,0.14); --c-I-bd:   rgba(179,157,250,0.28);
-  --c-H:   #6ddbb0; --c-H-dim:   rgba(109,219,176,0.12); --c-H-bd:   rgba(109,219,176,0.25);
-  --c-S:   #f07070; --c-S-dim:   rgba(240,112,112,0.12); --c-S-bd:   rgba(240,112,112,0.28);
-  --c-IH:  #70baf0; --c-IH-dim:  rgba(112,186,240,0.12); --c-IH-bd:  rgba(112,186,240,0.28);
-  --c-SH:  #f0a832; --c-SH-dim:  rgba(240,168,50,0.13);  --c-SH-bd:  rgba(240,168,50,0.22);
+  --amber-dim: rgba(240,168,50,0.12);
+  --teal: #2dd4a0;
+  --teal-dim: rgba(45,212,160,0.10);
+  --coral: #f06060;
+  --coral-dim: rgba(240,96,96,0.10);
+  --purple: #a78bfa;
+  --purple-dim: rgba(167,139,250,0.12);
+  --c-I:   #a78bfa; --c-I-dim:   rgba(167,139,250,0.12); --c-I-bd:   rgba(167,139,250,0.25);
+  --c-H:   #2dd4a0; --c-H-dim:   rgba(45,212,160,0.10);  --c-H-bd:   rgba(45,212,160,0.2);
+  --c-S:   #f06060; --c-S-dim:   rgba(240,96,96,0.10);   --c-S-bd:   rgba(240,96,96,0.28);
+  --c-IH:  #60aaee; --c-IH-dim:  rgba(96,170,238,0.10);  --c-IH-bd:  rgba(96,170,238,0.28);
+  --c-SH:  #f0a832; --c-SH-dim:  rgba(240,168,50,0.12);  --c-SH-bd:  rgba(240,168,50,0.2);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; }
@@ -184,7 +184,7 @@ input[type="text"]::placeholder { color: var(--dim); }
 
 .list-header {
   display: grid;
-  grid-template-columns: 1fr 1fr 72px 44px;
+  grid-template-columns: 1fr 1fr 140px 44px;
   padding: 8px 12px;
   font-size: 10px;
   font-family: 'DM Mono', monospace;
@@ -212,7 +212,7 @@ input[type="text"]::placeholder { color: var(--dim); }
 
 .row {
   display: grid;
-  grid-template-columns: 1fr 1fr 72px 44px;
+  grid-template-columns: 1fr 1fr 140px 44px;
   align-items: center;
   padding: 11px 12px;
   border-radius: 8px;
@@ -262,7 +262,13 @@ input[type="text"]::placeholder { color: var(--dim); }
 
 .rating-emoji { font-size: 17px; text-align: center; line-height: 1; user-select: none; }
 
-.empty {
+.type-label-full  { display: inline; }
+.type-label-short { display: none; }
+
+@media (max-width: 480px) {
+  .type-label-full  { display: none; }
+  .type-label-short { display: inline; }
+}
   padding: 60px 20px;
   text-align: center;
   color: var(--dim);
@@ -422,13 +428,25 @@ select:focus { border-color: var(--purple); }
   animation: slideUp 0.18s ease;
   margin: auto;
 }
+.modal-header {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
 .modal-brand {
-  font-size: 10px; color: var(--dim);
-  font-family: 'DM Mono', monospace; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 3px;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: var(--amber);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
 }
 .modal-strain {
-  font-family: 'Bebas Neue', sans-serif; font-size: 24px;
-  letter-spacing: 1.5px; color: var(--text); margin-bottom: 18px; line-height: 1.1;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 38px;
+  letter-spacing: 2px;
+  color: var(--text);
+  line-height: 1.05;
 }
 .modal label {
   display: block; font-size: 10px; color: var(--muted);
@@ -525,8 +543,7 @@ select:focus { border-color: var(--purple); }
 
   .list { padding: 0 10px 60px; }
   .list-header { grid-template-columns: 1fr 1fr 60px 36px; padding: 7px 10px; font-size: 9px; }
-  .row { grid-template-columns: 1fr 1fr 60px 36px; padding: 10px 10px; }
-  .row-brand { font-size: 10px; padding-right: 6px; }
+  .row { grid-template-columns: 1fr 1fr 60px 36px; padding: 10px 10px; }  .row-brand { font-size: 10px; padding-right: 6px; }
   .row-strain { font-size: 12px; padding-right: 6px; }
   .type-badge { font-size: 9px; padding: 2px 5px; }
   .rating-emoji { font-size: 15px; }
@@ -645,8 +662,10 @@ select:focus { border-color: var(--purple); }
 <!-- EDIT / ADD MODAL -->
 <div class="modal-bg" id="modal" onclick="if(event.target===this)closeModal()">
   <div class="modal" onclick="event.stopPropagation()">
-    <div class="modal-brand"  id="modal-brand-label"></div>
-    <div class="modal-strain" id="modal-strain-label">Strain</div>
+    <div class="modal-header">
+      <div class="modal-brand"  id="modal-brand-label"></div>
+      <div class="modal-strain" id="modal-strain-label">Strain</div>
+    </div>
 
     <label>Brand</label>
     <input type="text" id="edit-brand" placeholder="Brand name">
@@ -824,7 +843,11 @@ function typeBadgeClass(t) {
   return { I:'type-I', H:'type-H', S:'type-S', 'I-H':'type-IH', 'S-H':'type-SH' }[t] || 'type-unknown';
 }
 function typeLabel(t) {
-  return { I:'I', H:'H', S:'S', 'I-H':'I-H', 'S-H':'S-H' }[t] || (t||'—');
+  const full  = { I:'Indica', H:'Hybrid', S:'Sativa', 'I-H':'Indica Hybrid', 'S-H':'Sativa Hybrid' };
+  const short = { I:'I', H:'H', S:'S', 'I-H':'I-H', 'S-H':'S-H' };
+  const f = full[t]  || (t||'—');
+  const s = short[t] || (t||'—');
+  return `<span class="type-label-full">${f}</span><span class="type-label-short">${s}</span>`;
 }
 function ratingEmoji(r) {
   return r==='Great' ? '🔥' : r==='OK' ? '🌿' : r==='NG' ? '🗑️' : '<span style="color:var(--dim);font-size:12px">—</span>';

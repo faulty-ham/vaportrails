@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>VaporTrails</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,95 +27,310 @@
   --coral-dim: rgba(240,96,96,0.10);
   --purple: #a78bfa;
   --purple-dim: rgba(167,139,250,0.12);
-  --green: #5ec97a;
-  --green-dim: rgba(94,201,122,0.10);
-  --sky: #60c0f0;
-  --sky-dim: rgba(96,192,240,0.10);
-  --pink: #f472b6;
-  --pink-dim: rgba(244,114,182,0.10);
+  --c-I:   #a78bfa; --c-I-dim:   rgba(167,139,250,0.12); --c-I-bd:   rgba(167,139,250,0.25);
+  --c-H:   #2dd4a0; --c-H-dim:   rgba(45,212,160,0.10);  --c-H-bd:   rgba(45,212,160,0.2);
+  --c-S:   #f06060; --c-S-dim:   rgba(240,96,96,0.10);   --c-S-bd:   rgba(240,96,96,0.28);
+  --c-IH:  #60aaee; --c-IH-dim:  rgba(96,170,238,0.10);  --c-IH-bd:  rgba(96,170,238,0.28);
+  --c-SH:  #f0a832; --c-SH-dim:  rgba(240,168,50,0.12);  --c-SH-bd:  rgba(240,168,50,0.2);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
 body {
   background: var(--bg);
   color: var(--text);
   font-family: 'DM Sans', sans-serif;
   min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
 }
 
-/* HEADER */
+/* ── HEADER ─────────────────────────────────────────────────────────────────── */
 .header {
   background: var(--bg2);
   border-bottom: 1px solid var(--border2);
-  padding: 18px 28px;
+  padding: 14px 20px;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 12px;
   position: sticky;
   top: 0;
   z-index: 100;
 }
 .logo {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 32px;
+  font-size: 28px;
   letter-spacing: 3px;
   color: var(--amber);
   line-height: 1;
 }
-.logo span { color: var(--muted); font-size: 13px; display: block; letter-spacing: 5px; font-family: 'DM Mono', monospace; font-weight: 400; margin-top: 1px; }
 .header-stats {
   margin-left: auto;
   display: flex;
-  gap: 20px;
+  gap: 8px;
   align-items: center;
+  flex-wrap: nowrap;
 }
 .stat-pill {
   background: var(--bg3);
   border: 1px solid var(--border);
   border-radius: 100px;
-  padding: 6px 16px;
-  font-size: 12px;
+  padding: 5px 12px;
+  font-size: 11px;
   color: var(--muted);
   font-family: 'DM Mono', monospace;
+  white-space: nowrap;
 }
 .stat-pill strong { color: var(--text); }
+.btn-logout {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--dim);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.btn-logout:hover { border-color: var(--coral); color: var(--coral); }
 
-/* CONTROLS */
+/* ── CONTROLS ────────────────────────────────────────────────────────────────── */
 .controls {
-  padding: 20px 28px;
+  padding: 12px 20px;
   background: var(--bg2);
   border-bottom: 1px solid var(--border);
   display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
+  gap: 10px;
   align-items: center;
 }
 .search-wrap {
   position: relative;
   flex: 1;
-  min-width: 180px;
-  max-width: 340px;
+  min-width: 0;
 }
 .search-wrap svg {
   position: absolute;
-  left: 12px;
+  left: 11px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--muted);
+  pointer-events: none;
 }
 input[type="text"] {
   width: 100%;
   background: var(--bg3);
   border: 1px solid var(--border2);
   border-radius: 8px;
-  padding: 9px 12px 9px 38px;
+  padding: 9px 12px 9px 36px;
   color: var(--text);
   font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   outline: none;
   transition: border-color 0.2s;
+  -webkit-appearance: none;
 }
 input[type="text"]:focus { border-color: var(--purple); }
 input[type="text"]::placeholder { color: var(--dim); }
+.btn-filter {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  padding: 9px 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-filter:hover { border-color: var(--purple); color: var(--text); }
+.btn-filter.active { background: var(--purple-dim); border-color: var(--purple); color: var(--purple); }
+.filter-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--amber); display: none; }
+.btn-filter.active .filter-dot { display: block; }
+.btn-add {
+  background: var(--amber-dim);
+  border: 1px solid var(--amber);
+  border-radius: 8px;
+  color: var(--amber);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 9px 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-add:hover { background: rgba(240,168,50,0.2); }
+
+/* ── RESULT BAR ──────────────────────────────────────────────────────────────── */
+.result-bar {
+  padding: 9px 20px;
+  font-size: 11px;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  border-bottom: 1px solid var(--border);
+}
+.result-bar strong { color: var(--text); }
+
+/* ── LIST ────────────────────────────────────────────────────────────────────── */
+.list { padding: 0 20px 40px; }
+
+.list-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 72px 44px;
+  padding: 8px 12px;
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--dim);
+  border-bottom: 1px solid var(--border);
+  margin-top: 8px;
+  margin-bottom: 2px;
+}
+.col-header {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.col-header:hover { color: var(--text); }
+.col-header.sorted { color: var(--purple); }
+.col-header.sorted .sort-arrow { opacity: 1; }
+.sort-arrow { opacity: 0; font-size: 8px; }
+.col-header-rating { justify-content: center; }
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 72px 44px;
+  align-items: center;
+  padding: 11px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.12s;
+  border-bottom: 1px solid var(--border);
+  -webkit-tap-highlight-color: transparent;
+}
+.row:last-child { border-bottom: none; }
+.row:hover, .row:active { background: var(--surface2); }
+
+.row-brand {
+  font-size: 11px;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+.row-strain {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+.type-badge {
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  padding: 3px 7px;
+  border-radius: 100px;
+  border: 1px solid;
+  letter-spacing: 0.5px;
+  display: inline-block;
+  white-space: nowrap;
+}
+.type-I  { color: var(--c-I);  background: var(--c-I-dim);  border-color: var(--c-I-bd); }
+.type-H  { color: var(--c-H);  background: var(--c-H-dim);  border-color: var(--c-H-bd); }
+.type-S  { color: var(--c-S);  background: var(--c-S-dim);  border-color: var(--c-S-bd); }
+.type-IH { color: var(--c-IH); background: var(--c-IH-dim); border-color: var(--c-IH-bd); }
+.type-SH { color: var(--c-SH); background: var(--c-SH-dim); border-color: var(--c-SH-bd); }
+.type-unknown { color: var(--muted); background: transparent; border-color: var(--border); }
+
+.rating-emoji { font-size: 17px; text-align: center; line-height: 1; user-select: none; }
+
+.empty {
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--dim);
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+}
+
+/* ── FILTER PANEL ────────────────────────────────────────────────────────────── */
+.filter-panel-bg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 200;
+  align-items: flex-start;
+  justify-content: flex-end;
+  backdrop-filter: blur(3px);
+  padding: 64px 16px 16px;
+}
+.filter-panel-bg.open { display: flex; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  padding: 22px;
+  width: 290px;
+  max-width: calc(100vw - 32px);
+  animation: slideUp 0.18s ease;
+  max-height: calc(100dvh - 80px);
+  overflow-y: auto;
+}
+.filter-panel h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: var(--text);
+  margin-bottom: 18px;
+}
+.filter-section { margin-bottom: 18px; }
+.filter-section label {
+  display: block;
+  font-size: 10px;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.chip-group { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  padding: 6px 12px;
+  border-radius: 100px;
+  border: 1px solid var(--border2);
+  background: var(--bg3);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.chip:hover { color: var(--text); }
+.chip.on        { background: var(--purple-dim); border-color: var(--purple); color: var(--purple); }
+.chip.on-great  { background: var(--teal-dim); border-color: var(--teal); color: var(--teal); }
+.chip.on-ok     { background: rgba(45,180,100,0.12); border-color: rgba(45,180,100,0.3); color: #4dc87a; }
+.chip.on-ng     { background: var(--coral-dim); border-color: var(--coral); color: var(--coral); }
+.filter-brand-select { width: 100%; }
 select {
   background: var(--bg3);
   border: 1px solid var(--border2);
@@ -134,503 +349,210 @@ select {
   transition: border-color 0.2s;
 }
 select:focus { border-color: var(--purple); }
-
-/* FILTER BUTTON */
-.btn-filter {
-  background: var(--bg3);
-  border: 1px solid var(--border2);
-  border-radius: 8px;
-  color: var(--muted);
-  font-size: 13px;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 500;
-  padding: 9px 18px;
-  cursor: pointer;
-  transition: all 0.15s;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  white-space: nowrap;
-}
-.btn-filter:hover { border-color: var(--purple); color: var(--text); }
-.btn-filter.active { background: var(--purple-dim); border-color: var(--purple); color: var(--purple); }
-.filter-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--amber);
-  display: none;
-}
-.btn-filter.active .filter-dot { display: block; }
-
-/* FILTER PANEL MODAL */
-.filter-panel-bg {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  z-index: 200;
-  align-items: flex-start;
-  justify-content: flex-end;
-  backdrop-filter: blur(3px);
-  padding: 72px 20px 20px;
-}
-.filter-panel-bg.open { display: flex; }
-.filter-panel {
-  background: var(--surface);
-  border: 1px solid var(--border2);
-  border-radius: 16px;
-  padding: 24px;
-  width: 300px;
-  max-width: 95vw;
-  animation: slideUp 0.18s ease;
-  max-height: calc(100vh - 100px);
-  overflow-y: auto;
-}
-.filter-panel h3 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 20px;
-  letter-spacing: 2px;
-  color: var(--text);
-  margin-bottom: 20px;
-}
-.filter-section {
-  margin-bottom: 20px;
-}
-.filter-section label {
-  display: block;
-  font-size: 10px;
-  color: var(--muted);
-  font-family: 'DM Mono', monospace;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-.chip-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-.chip {
-  font-size: 11px;
-  font-family: 'DM Mono', monospace;
-  padding: 5px 12px;
-  border-radius: 100px;
-  border: 1px solid var(--border2);
-  background: var(--bg3);
-  color: var(--muted);
-  cursor: pointer;
-  transition: all 0.15s;
-  user-select: none;
-}
-.chip:hover { color: var(--text); border-color: var(--border2); }
-.chip.on { background: var(--purple-dim); border-color: var(--purple); color: var(--purple); }
-.chip.on-great { background: var(--teal-dim); border-color: var(--teal); color: var(--teal); }
-.chip.on-ok { background: rgba(45,180,100,0.12); border-color: rgba(45,180,100,0.3); color: #4dc87a; }
-.chip.on-ng { background: var(--coral-dim); border-color: var(--coral); color: var(--coral); }
-
-.filter-brand-select {
-  width: 100%;
-  margin-bottom: 0;
-}
-.filter-panel-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 4px;
-}
+.filter-panel-actions { display: flex; gap: 10px; margin-top: 4px; }
 .btn-clear-filters {
-  flex: 1;
-  padding: 10px;
-  border-radius: 8px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  cursor: pointer;
-  border: 1px solid var(--border2);
-  background: var(--bg3);
-  color: var(--muted);
-  transition: all 0.15s;
+  flex: 1; padding: 10px; border-radius: 8px;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer;
+  border: 1px solid var(--border2); background: var(--bg3); color: var(--muted); transition: all 0.15s;
 }
 .btn-clear-filters:hover { color: var(--text); }
 .btn-apply-filters {
-  flex: 1;
-  padding: 10px;
-  border-radius: 8px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  border: 1px solid var(--purple);
-  background: var(--purple-dim);
-  color: var(--purple);
-  transition: all 0.15s;
+  flex: 1; padding: 10px; border-radius: 8px;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer;
+  border: 1px solid var(--purple); background: var(--purple-dim); color: var(--purple); transition: all 0.15s;
 }
 .btn-apply-filters:hover { background: rgba(167,139,250,0.2); }
 
-
-/* RESULT COUNT */
-.result-bar {
-  padding: 12px 28px;
-  font-size: 12px;
-  color: var(--muted);
-  font-family: 'DM Mono', monospace;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-.result-bar strong { color: var(--text); }
-
-/* LIST */
-.list {
-  padding: 0 28px 28px;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Column header row — sortable */
-.list-header {
-  display: grid;
-  grid-template-columns: 1fr 1fr 80px 48px;
-  gap: 0;
-  padding: 8px 14px;
-  font-size: 10px;
-  font-family: 'DM Mono', monospace;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--dim);
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 2px;
-  margin-top: 8px;
-}
-.col-header {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  cursor: pointer;
-  user-select: none;
-  transition: color 0.15s;
-  padding-right: 8px;
-}
-.col-header:hover { color: var(--text); }
-.col-header.sorted { color: var(--purple); }
-.col-header.sorted .sort-arrow { opacity: 1; }
-.sort-arrow {
-  opacity: 0;
-  font-size: 9px;
-  transition: opacity 0.15s;
-}
-.col-header-rating {
-  justify-content: center;
-  padding-right: 0;
-}
-
-/* ROW */
-.row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 80px 48px;
-  gap: 0;
-  align-items: center;
-  padding: 10px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.12s;
-  border-bottom: 1px solid var(--border);
-}
-.row:last-child { border-bottom: none; }
-.row:hover { background: var(--surface2); }
-
-.row-brand {
-  font-size: 12px;
-  color: var(--muted);
-  font-family: 'DM Mono', monospace;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding-right: 12px;
-}
-.row-strain {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding-right: 12px;
-}
-.type-badge {
-  font-size: 10px;
-  font-family: 'DM Mono', monospace;
-  font-weight: 500;
-  padding: 3px 9px;
-  border-radius: 100px;
-  border: 1px solid;
-  letter-spacing: 0.5px;
-  display: inline-block;
-  white-space: nowrap;
-}
-.type-I    { color: var(--purple); background: var(--purple-dim); border-color: rgba(167,139,250,0.25); }
-.type-H    { color: var(--teal);   background: var(--teal-dim);   border-color: rgba(45,212,160,0.2); }
-.type-S    { color: #f06060;       background: rgba(240,96,96,0.10); border-color: rgba(240,96,96,0.28); }
-.type-IH   { color: #60aaee;      background: rgba(96,170,238,0.10); border-color: rgba(96,170,238,0.28); }
-.type-SH   { color: var(--amber);  background: var(--amber-dim);  border-color: rgba(240,168,50,0.2); }
-.type-unknown { color: var(--muted); background: transparent; border-color: var(--border); }
-
-.rating-emoji {
-  font-size: 18px;
-  text-align: center;
-  line-height: 1;
-  user-select: none;
-}
-
-/* LOGIN SCREEN */
+/* ── LOGIN ───────────────────────────────────────────────────────────────────── */
 .login-screen {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: var(--bg);
-  z-index: 500;
-  align-items: center;
-  justify-content: center;
+  display: none; position: fixed; inset: 0;
+  background: var(--bg); z-index: 500;
+  align-items: center; justify-content: center;
+  padding: 20px;
 }
 .login-screen.visible { display: flex; }
 .login-box {
-  background: var(--surface);
-  border: 1px solid var(--border2);
-  border-radius: 20px;
-  padding: 40px 36px;
-  width: 360px;
-  max-width: 95vw;
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 20px; padding: 36px 28px;
+  width: 100%; max-width: 340px;
   animation: slideUp 0.2s ease;
 }
-.login-logo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 42px;
-  letter-spacing: 4px;
-  color: var(--amber);
-  line-height: 1;
-  margin-bottom: 4px;
-}
-.login-sub {
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 4px;
-  color: var(--dim);
-  margin-bottom: 32px;
-}
+.login-logo { font-family: 'Bebas Neue', sans-serif; font-size: 38px; letter-spacing: 4px; color: var(--amber); line-height: 1; margin-bottom: 4px; }
+.login-sub  { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 4px; color: var(--dim); margin-bottom: 28px; }
 .login-box label {
-  display: block;
-  font-size: 11px;
-  color: var(--muted);
-  font-family: 'DM Mono', monospace;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  margin-bottom: 7px;
+  display: block; font-size: 10px; color: var(--muted);
+  font-family: 'DM Mono', monospace; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 7px;
 }
 .login-box input[type="email"],
 .login-box input[type="password"] {
-  width: 100%;
-  background: var(--bg3);
-  border: 1px solid var(--border2);
-  border-radius: 8px;
-  padding: 11px 14px;
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s;
-  margin-bottom: 18px;
+  width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px;
+  padding: 12px 14px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 16px;
+  outline: none; transition: border-color 0.2s; margin-bottom: 16px; -webkit-appearance: none;
 }
 .login-box input[type="email"]:focus,
 .login-box input[type="password"]:focus { border-color: var(--purple); }
 .login-box input::placeholder { color: var(--dim); }
 .btn-login {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  border: 1px solid var(--amber);
-  background: var(--amber-dim);
-  color: var(--amber);
-  transition: all 0.15s;
-  margin-top: 4px;
+  width: 100%; padding: 13px; border-radius: 8px;
+  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer;
+  border: 1px solid var(--amber); background: var(--amber-dim); color: var(--amber);
+  transition: all 0.15s; margin-top: 4px;
 }
 .btn-login:hover { background: rgba(240,168,50,0.22); }
-.login-error {
-  font-size: 12px;
-  color: var(--coral);
-  font-family: 'DM Mono', monospace;
-  margin-top: 12px;
-  min-height: 18px;
-  text-align: center;
-}
+.login-error { font-size: 12px; color: var(--coral); font-family: 'DM Mono', monospace; margin-top: 12px; min-height: 18px; text-align: center; }
 
-/* LOGOUT BUTTON */
-.btn-logout {
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--dim);
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  padding: 7px 14px;
-  cursor: pointer;
-  transition: all 0.15s;
-  letter-spacing: 0.5px;
-}
-.btn-logout:hover { border-color: var(--coral); color: var(--coral); }
-
-
-.modal-bg {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.75);
-  z-index: 200;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(4px);
-}
-.modal-bg.open { display: flex; }
-.modal {
-  background: var(--surface);
-  border: 1px solid var(--border2);
-  border-radius: 16px;
-  padding: 28px;
-  width: 360px;
-  max-width: 95vw;
-  animation: slideUp 0.18s ease;
-}
+/* ── MODAL ───────────────────────────────────────────────────────────────────── */
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+.modal-bg {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.75); z-index: 200;
+  align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+  padding: 16px;
+  overflow-y: auto;
+}
+.modal-bg.open { display: flex; }
+.modal {
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 16px; padding: 24px;
+  width: 100%; max-width: 400px;
+  animation: slideUp 0.18s ease;
+  margin: auto;
+}
 .modal-brand {
-  font-size: 11px;
-  color: var(--dim);
-  font-family: 'DM Mono', monospace;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 4px;
+  font-size: 10px; color: var(--dim);
+  font-family: 'DM Mono', monospace; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 3px;
 }
 .modal-strain {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 28px;
-  letter-spacing: 1.5px;
-  color: var(--text);
-  margin-bottom: 20px;
-  line-height: 1.1;
+  font-family: 'Bebas Neue', sans-serif; font-size: 24px;
+  letter-spacing: 1.5px; color: var(--text); margin-bottom: 18px; line-height: 1.1;
 }
 .modal label {
-  display: block;
-  font-size: 11px;
+  display: block; font-size: 10px; color: var(--muted);
+  font-family: 'DM Mono', monospace; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 7px;
+}
+.modal input[type="text"] {
+  padding: 10px 14px; font-size: 15px; margin-bottom: 16px;
+}
+.modal textarea {
+  width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px;
+  padding: 10px 14px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px;
+  outline: none; resize: vertical; min-height: 64px; margin-bottom: 16px; transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+.modal textarea:focus { border-color: var(--purple); }
+.modal textarea::placeholder { color: var(--dim); }
+
+/* ── TYPE BUTTONS ────────────────────────────────────────────────────────────── */
+.type-btn-group {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: nowrap;
+}
+.type-btn {
+  flex: 1;
+  padding: 9px 4px;
+  border-radius: 8px;
+  border: 1px solid var(--border2);
+  background: var(--bg3);
   color: var(--muted);
   font-family: 'DM Mono', monospace;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-.modal select, .modal input[type="text"] {
-  width: 100%;
-  margin-bottom: 18px;
-  padding: 10px 14px;
-  font-size: 14px;
-}
-.modal select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' viewBox='0 0 24 24'%3E%3Cpath stroke='%237a789a' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  padding-right: 38px;
-}
-.rating-options {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 20px;
-}
-.rating-opt {
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 10px 6px;
+  font-size: 11px;
+  font-weight: 500;
   text-align: center;
   cursor: pointer;
-  font-size: 12px;
-  font-family: 'DM Mono', monospace;
-  color: var(--muted);
-  background: var(--bg3);
   transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  letter-spacing: 0.3px;
+}
+.type-btn:hover { color: var(--text); border-color: var(--border2); }
+.type-btn.sel-I  { color: var(--c-I);  background: var(--c-I-dim);  border-color: var(--c-I-bd); }
+.type-btn.sel-H  { color: var(--c-H);  background: var(--c-H-dim);  border-color: var(--c-H-bd); }
+.type-btn.sel-S  { color: var(--c-S);  background: var(--c-S-dim);  border-color: var(--c-S-bd); }
+.type-btn.sel-IH { color: var(--c-IH); background: var(--c-IH-dim); border-color: var(--c-IH-bd); }
+.type-btn.sel-SH { color: var(--c-SH); background: var(--c-SH-dim); border-color: var(--c-SH-bd); }
+
+/* ── RATING OPTIONS ──────────────────────────────────────────────────────────── */
+.rating-options {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px;
+}
+.rating-opt {
+  border: 1px solid var(--border); border-radius: 8px; padding: 10px 6px;
+  text-align: center; cursor: pointer; font-size: 12px;
+  font-family: 'DM Mono', monospace; color: var(--muted); background: var(--bg3);
+  transition: all 0.15s; -webkit-tap-highlight-color: transparent;
 }
 .rating-opt:hover { border-color: var(--border2); color: var(--text); }
-.rating-opt.sel-great { background: var(--teal-dim); border-color: var(--teal); color: var(--teal); }
-.rating-opt.sel-ok    { background: var(--amber-dim); border-color: var(--amber); color: var(--amber); }
-.rating-opt.sel-ng    { background: var(--coral-dim); border-color: var(--coral); color: var(--coral); }
+.rating-opt.sel-great   { background: var(--teal-dim);   border-color: var(--teal);   color: var(--teal); }
+.rating-opt.sel-ok      { background: rgba(45,180,100,0.12); border-color: rgba(45,180,100,0.3); color: #4dc87a; }
+.rating-opt.sel-ng      { background: var(--coral-dim);  border-color: var(--coral);  color: var(--coral); }
 .rating-opt.sel-unrated { background: var(--bg3); border-color: var(--dim); color: var(--muted); }
 
 .modal-actions { display: flex; gap: 10px; margin-top: 4px; }
 .btn {
-  flex: 1;
-  padding: 11px;
-  border-radius: 8px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  border: 1px solid var(--border2);
-  transition: all 0.15s;
+  flex: 1; padding: 12px; border-radius: 8px;
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+  cursor: pointer; border: 1px solid var(--border2); transition: all 0.15s;
 }
 .btn-cancel { background: var(--bg3); color: var(--muted); }
 .btn-cancel:hover { color: var(--text); }
 .btn-save { background: var(--purple-dim); border-color: var(--purple); color: var(--purple); }
 .btn-save:hover { background: rgba(167,139,250,0.2); }
 
-.btn-add {
-  background: var(--amber-dim);
-  border: 1px solid var(--amber);
-  border-radius: 8px;
-  color: var(--amber);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  padding: 9px 18px;
-  cursor: pointer;
-  transition: all 0.15s;
-  white-space: nowrap;
-}
-.btn-add:hover { background: rgba(240,168,50,0.2); }
-
-/* EMPTY STATE */
-.empty {
-  padding: 60px 28px;
-  text-align: center;
-  color: var(--dim);
-  font-family: 'DM Mono', monospace;
-  font-size: 13px;
+/* ── STATUS BAR ──────────────────────────────────────────────────────────────── */
+#status-bar {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  background: var(--surface2); border: 1px solid var(--border2); border-radius: 8px;
+  padding: 10px 20px; font-family: 'DM Mono', monospace; font-size: 12px;
+  color: var(--muted); z-index: 300; transition: opacity 0.3s; pointer-events: none;
 }
 
-/* NOTES */
-.modal textarea {
-  width: 100%;
-  background: var(--bg3);
-  border: 1px solid var(--border2);
-  border-radius: 8px;
-  padding: 10px 14px;
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  outline: none;
-  resize: vertical;
-  min-height: 70px;
-  margin-bottom: 18px;
-  transition: border-color 0.2s;
+/* ── MOBILE ──────────────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .header { padding: 12px 14px; }
+  .logo { font-size: 24px; }
+  .stat-pill { padding: 4px 9px; font-size: 10px; display: none; }
+  .stat-pill:first-child { display: block; } /* keep strain count */
+  .btn-logout { padding: 5px 10px; font-size: 10px; }
+
+  .controls { padding: 10px 14px; gap: 8px; }
+
+  .result-bar { padding: 7px 14px; }
+
+  .list { padding: 0 10px 60px; }
+  .list-header { grid-template-columns: 1fr 1fr 60px 36px; padding: 7px 10px; font-size: 9px; }
+  .row { grid-template-columns: 1fr 1fr 60px 36px; padding: 10px 10px; }
+  .row-brand { font-size: 10px; padding-right: 6px; }
+  .row-strain { font-size: 12px; padding-right: 6px; }
+  .type-badge { font-size: 9px; padding: 2px 5px; }
+  .rating-emoji { font-size: 15px; }
+
+  .modal { padding: 20px 18px; }
+  .modal-strain { font-size: 20px; margin-bottom: 14px; }
+  .type-btn { font-size: 10px; padding: 8px 2px; }
+  .filter-panel-bg { padding: 60px 12px 12px; }
 }
-.modal textarea:focus { border-color: var(--purple); }
-.modal textarea::placeholder { color: var(--dim); }
+
+/* Landscape phone */
+@media (max-height: 500px) and (max-width: 900px) {
+  .modal-bg { align-items: flex-start; padding: 8px; }
+  .modal { max-height: calc(100dvh - 16px); overflow-y: auto; }
+  .modal-strain { font-size: 18px; margin-bottom: 10px; }
+  .modal label { margin-bottom: 4px; }
+  .modal input[type="text"] { padding: 8px 12px; margin-bottom: 10px; }
+  .modal textarea { min-height: 48px; margin-bottom: 10px; }
+  .rating-options { margin-bottom: 10px; }
+  .type-btn-group { margin-bottom: 10px; }
+}
 </style>
 </head>
 <body>
 
-<!-- LOGIN SCREEN -->
+<!-- LOGIN -->
 <div class="login-screen" id="login-screen">
   <div class="login-box">
     <div class="login-logo">VaporTrails</div>
@@ -644,11 +566,9 @@ select:focus { border-color: var(--purple); }
   </div>
 </div>
 
+<!-- HEADER -->
 <header class="header">
-  <div>
-    <div class="logo">VaporTrails</div>
-    <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:3px;display:block;margin-top:3px;">FLOWER JOURNAL</span>
-  </div>
+  <div class="logo">VaporTrails</div>
   <div class="header-stats">
     <div class="stat-pill"><strong id="stat-total">0</strong> strains</div>
     <div class="stat-pill"><strong id="stat-great" style="color:var(--teal)">0</strong> 🔥</div>
@@ -657,52 +577,49 @@ select:focus { border-color: var(--purple); }
   </div>
 </header>
 
+<!-- CONTROLS -->
 <div class="controls">
   <div class="search-wrap">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     <input type="text" id="search" placeholder="Search strain or brand…">
   </div>
   <button class="btn-filter" id="btn-filter" onclick="openFilterPanel()">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
     Filter
     <span class="filter-dot" id="filter-dot"></span>
   </button>
-  <button class="btn-add" onclick="openAdd()">+ Add Strain</button>
+  <button class="btn-add" onclick="openAdd()">+ Add</button>
 </div>
 
 <!-- FILTER PANEL -->
-<div class="filter-panel-bg" id="filter-panel-bg" onclick="if(event.target===this) closeFilterPanel()">
+<div class="filter-panel-bg" id="filter-panel-bg" onclick="if(event.target===this)closeFilterPanel()">
   <div class="filter-panel">
     <h3>Filters</h3>
-
     <div class="filter-section">
       <label>Rating</label>
       <div class="chip-group">
-        <div class="chip" id="chip-great" onclick="toggleChip('great')">🔥 Fire</div>
-        <div class="chip" id="chip-ok"    onclick="toggleChip('ok')">🌿 Fresh</div>
-        <div class="chip" id="chip-ng"    onclick="toggleChip('ng')">🗑️ Trash</div>
+        <div class="chip" id="chip-great"   onclick="toggleChip('great')">🔥 Fire</div>
+        <div class="chip" id="chip-ok"      onclick="toggleChip('ok')">🌿 Fresh</div>
+        <div class="chip" id="chip-ng"      onclick="toggleChip('ng')">🗑️ Trash</div>
         <div class="chip" id="chip-unrated" onclick="toggleChip('unrated')">— Unrated</div>
       </div>
     </div>
-
     <div class="filter-section">
       <label>Type</label>
       <div class="chip-group">
-        <div class="chip" id="chip-I"   onclick="toggleChip('I')">Indica</div>
-        <div class="chip" id="chip-H"   onclick="toggleChip('H')">Hybrid</div>
-        <div class="chip" id="chip-S"   onclick="toggleChip('S')">Sativa</div>
-        <div class="chip" id="chip-IH"  onclick="toggleChip('IH')">I-Hybrid</div>
-        <div class="chip" id="chip-SH"  onclick="toggleChip('SH')">S-Hybrid</div>
+        <div class="chip" id="chip-I"  onclick="toggleChip('I')">I</div>
+        <div class="chip" id="chip-IH" onclick="toggleChip('IH')">I-H</div>
+        <div class="chip" id="chip-H"  onclick="toggleChip('H')">H</div>
+        <div class="chip" id="chip-SH" onclick="toggleChip('SH')">S-H</div>
+        <div class="chip" id="chip-S"  onclick="toggleChip('S')">S</div>
       </div>
     </div>
-
     <div class="filter-section">
       <label>Brand</label>
       <select id="filter-brand" class="filter-brand-select">
         <option value="">All brands</option>
       </select>
     </div>
-
     <div class="filter-panel-actions">
       <button class="btn-clear-filters" onclick="clearFilters()">Clear All</button>
       <button class="btn-apply-filters" onclick="closeFilterPanel()">Done</button>
@@ -710,10 +627,10 @@ select:focus { border-color: var(--purple); }
   </div>
 </div>
 
-<div class="result-bar">
-  <span id="result-text">Loading…</span>
-</div>
+<!-- RESULT BAR -->
+<div class="result-bar"><span id="result-text">Loading…</span></div>
 
+<!-- LIST -->
 <div class="list">
   <div class="list-header">
     <div class="col-header" id="col-brand"  onclick="setSort('brand')">Brand <span class="sort-arrow" id="arrow-brand">▲</span></div>
@@ -725,11 +642,11 @@ select:focus { border-color: var(--purple); }
 </div>
 <div class="empty" id="empty" style="display:none">No strains match your filters.</div>
 
-<!-- EDIT/ADD MODAL -->
-<div class="modal-bg" id="modal" onclick="e => { if(e.target===this) closeModal(); }">
+<!-- EDIT / ADD MODAL -->
+<div class="modal-bg" id="modal" onclick="if(event.target===this)closeModal()">
   <div class="modal" onclick="event.stopPropagation()">
-    <div class="modal-brand" id="modal-brand-label"></div>
-    <div class="modal-strain" id="modal-strain-label">Strain Name</div>
+    <div class="modal-brand"  id="modal-brand-label"></div>
+    <div class="modal-strain" id="modal-strain-label">Strain</div>
 
     <label>Brand</label>
     <input type="text" id="edit-brand" placeholder="Brand name">
@@ -738,20 +655,19 @@ select:focus { border-color: var(--purple); }
     <input type="text" id="edit-strain" placeholder="Strain name">
 
     <label>Type</label>
-    <select id="edit-type">
-      <option value="">Unknown</option>
-      <option value="I">Indica (I)</option>
-      <option value="H">Hybrid (H)</option>
-      <option value="S">Sativa (S)</option>
-      <option value="I-H">Indica-Hybrid (I-H)</option>
-      <option value="S-H">Sativa-Hybrid (S-H)</option>
-    </select>
+    <div class="type-btn-group">
+      <button class="type-btn" id="tbtn-I"  onclick="selectType('I')">I</button>
+      <button class="type-btn" id="tbtn-IH" onclick="selectType('I-H')">I-H</button>
+      <button class="type-btn" id="tbtn-H"  onclick="selectType('H')">H</button>
+      <button class="type-btn" id="tbtn-SH" onclick="selectType('S-H')">S-H</button>
+      <button class="type-btn" id="tbtn-S"  onclick="selectType('S')">S</button>
+    </div>
 
     <label>Rating</label>
     <div class="rating-options">
-      <div class="rating-opt" id="opt-great" onclick="selectRating('Great')">🔥 Fire</div>
-      <div class="rating-opt" id="opt-ok"    onclick="selectRating('OK')">🌿 Fresh</div>
-      <div class="rating-opt" id="opt-ng"    onclick="selectRating('NG')">🗑️ Trash</div>
+      <div class="rating-opt" id="opt-great"   onclick="selectRating('Great')">🔥 Fire</div>
+      <div class="rating-opt" id="opt-ok"      onclick="selectRating('OK')">🌿 Fresh</div>
+      <div class="rating-opt" id="opt-ng"      onclick="selectRating('NG')">🗑️ Trash</div>
       <div class="rating-opt" id="opt-unrated" onclick="selectRating('')">— Unrated</div>
     </div>
 
@@ -760,493 +676,35 @@ select:focus { border-color: var(--purple); }
 
     <div class="modal-actions">
       <button class="btn btn-cancel" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-save" onclick="saveEntry()">Save</button>
+      <button class="btn btn-save"   onclick="saveEntry()">Save</button>
     </div>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ─── SUPABASE CONFIG ─────────────────────────────────────────────────────────
-// Paste your Project URL and anon/public key from Supabase → Project Settings → API
-const SUPABASE_URL  = 'https://oapjuqurbfimxopjpqgj.supabase.co';
-const SUPABASE_ANON = 'sb_publishable_lMKmlXlVCmEncq_iUQ52cA_wW81gzzQ';
+// ─── SUPABASE CONFIG ──────────────────────────────────────────────────────────
+const SUPABASE_URL  = 'YOUR_SUPABASE_URL';
+const SUPABASE_ANON = 'YOUR_SUPABASE_ANON_KEY';
 // ─────────────────────────────────────────────────────────────────────────────
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-const RAW = [
-["710 Labs","Garlic Cocktail #7","H","NG"],
-["710 Labs","Lemon Tree","H","NG"],
-["710 Labs","Randy Watson #13","H","NG"],
-["A Golden State","Caramel Apple","H","Great"],
-["A Golden State","Lava","S","Great"],
-["A Golden State","Mountain Shadows","H","Great"],
-["A Golden State","Silver Cloud","I","NG"],
-["A Golden State","Snow Dream","I","NG"],
-["A Golden State","Woods","S","Great"],
-["Alien Labs","Agent X","I-H","Great"],
-["Alien Labs","Alien Mints","H","Great"],
-["Alien Labs","Area 41","H","NG"],
-["Alien Labs","Atomic Apple","H","Great"],
-["Alien Labs","Baklava","H","Great"],
-["Alien Labs","Biskante","I-H","NG"],
-["Alien Labs","BK Satellite","H","NG"],
-["Alien Labs","Creme de Menthe","H","Great"],
-["Alien Labs","Dark Web","H","Great"],
-["Alien Labs","Galactic Gas","I-H","Great"],
-["Alien Labs","Gemini","I","NG"],
-["Alien Labs","Kryptochronic","I-H","Great"],
-["Alien Labs","Omnichronic","H","Great"],
-["Alien Labs","OZ Kush","H","NG"],
-["Alien Labs","Planet Milk","I-H","Great"],
-["Alien Labs","Planet Red","H","Great"],
-["Alien Labs","Sherbacio","H","NG"],
-["Alien Labs","Space Face","I-H","NG"],
-["Alien Labs","Xeno","S-H","Great"],
-["Alien Labs","Y2K","I-H","Great"],
-["Alien Labs","Zedband","H","Great"],
-["Alien Labs","Zkittlez","H","NG"],
-["Amplified","Cereal Milk","S-H","Great"],
-["Archive (Alien Labs)","Lemon Cane","H","NG"],
-["Archive (Alien Labs)","Moonbow","H","Great"],
-["Ball Family Farms","Laura Charles","I-H","Great"],
-["Ball Family Farms","Miyagi Do","I","Great"],
-["Ball Family Farms","Nino Brown","I","Great"],
-["Blem","Cyattie","H","Great"],
-["Blem","Unruly","H","NG"],
-["Blue Chip","Face on Fire","H","Great"],
-["Blue Chip","Forty One","I","Great"],
-["Blueprint","Triple Lindy","H","NG"],
-["Blueprint","Dr Freeze","I-H","Great"],
-["Blueprint","Jesus Shuttlesworth","I-H","Great"],
-["Blueprint","The One","I","Great"],
-["Bosky","Grip Tape","H","NG"],
-["Bosky","Guava Berry #10","H","NG"],
-["Cactus Farms","Pytjack","I-H","NG"],
-["Caliva","Alien OG","I","Great"],
-["Caliva","Chemistree","S","Great"],
-["Cam","Bubba's Girl","I","OK"],
-["Cam","Cam Pop","H","NG"],
-["Cam","Cam's Runtz","H","Great"],
-["Cam","Camethyst","I","Great"],
-["Cam","Carbon Fiber","I","Great"],
-["Cam","Cherry Markers","I","NG"],
-["Cam","Cosmic Kush","I",""],
-["Cam","Dosi Kush","I-H","Great"],
-["Cam","Euro Step","I","Great"],
-["Cam","Formula 41","I","Great"],
-["Cam","Frostline","H","Great"],
-["Cam","Grape Gas","I","Great"],
-["Cam","Kush Mints","H","OK"],
-["Cam","Lemon Lato","S-H","NG"],
-["Cam","Obama Runtz","I-H","NG"],
-["Cam","Papaya Juice","S-H","Great"],
-["Cam","Purple Rain","H","OK"],
-["Cam","REM","I-H","Great"],
-["Cam","Scottie's Cake","I-H","OK"],
-["Cam","Triangle Mints","H","OK"],
-["Cam","Wedding Cake","I-H","Great"],
-["Cam","Z Mints","H","Great"],
-["Cannabiotix","Blue Flame OG","I","Great"],
-["Cannabiotix","Blueberry","I","NG"],
-["Cannabiotix","Bubblegum","I-H","Great"],
-["Cannabiotix","Casino Kush","I","Great"],
-["Cannabiotix","Cereal Milk","I-H","Great"],
-["Cannabiotix","Cherry Dairy","I-H","Great"],
-["Cannabiotix","GM-Uhoh","I-H","Great"],
-["Cannabiotix","Grape Gasby","I","Great"],
-["Cannabiotix","Highuasca","","Great"],
-["Cannabiotix","Jet Lag OG","I","Great"],
-["Cannabiotix","Kush Milk","I-H","Great"],
-["Cannabiotix","Kush Mountains","I-H","NG"],
-["Cannabiotix","L'Orange","S-H","NG"],
-["Cannabiotix","Lemon Burst","S-H","NG"],
-["Cannabiotix","Master Kush","I","NG"],
-["Cannabiotix","RPG","I","Great"],
-["Cannabiotix","Strawberry Lemonade","S","NG"],
-["Cannabiotix","Super Silver Haze","S","NG"],
-["Cannabiotix","Thicc Mint Cookies","I-H","Great"],
-["Cannabiotix","Tropicanna","S","Great"],
-["Cannabiotix","Wedding Cake","I-H","NG"],
-["Cannabiotix","White Walker OG","I","NG"],
-["Cannabiotix","WiFi OG","H","NG"],
-["Cannabiotix","Zereal Milk","I-H","Great"],
-["Canndescent","Calm","I","Great"],
-["Canndescent","Charge","S","Great"],
-["Canndescent","Cheer (Holiday)","S","NG"],
-["Canndescent","Connect","S-H","NG"],
-["Canndescent","Create","S","NG"],
-["Canndescent","Cruise","H","NG"],
-["Coastal Sun","Cherry Punch","H","NG"],
-["Coastal Sun","Flo White","H","NG"],
-["Connected","Ambrosia","H","NG"],
-["Connected","Bad Apple","S-H","Great"],
-["Connected","Biscotti x Gushers","I","NG"],
-["Connected","Blowin Biscotti","I-H","NG"],
-["Connected","Chemist","H","Great"],
-["Connected","Cherry Fade","H","NG"],
-["Connected","Gelato 41","H","NG"],
-["Connected","Gelonade","S-H","Great"],
-["Connected","Guava x Biscotti","I","NG"],
-["Connected","Gushers","I-H","NG"],
-["Connected","Lemonatti","H","Great"],
-["Connected","Nightshade","I","Great"],
-["Connected","P1-0321-8","H","NG"],
-["Connected","Permanent Marker","I","NG"],
-["Connected","Rainbow Sherbert no11","H","Great"],
-["Connected","Rainbow Sherbert no54","H","NG"],
-["Connected","Slow Lane","I","Great"],
-["Connected","Sugar Cone","H","NG"],
-["Connected","Wipe Out","I-H","Great"],
-["Cookies","Adios Motherfucker","H","Great"],
-["Cookies","Berry Pie","H","Great"],
-["Cookies","Cereal a La Mode","H","Great"],
-["Cookies","Cereal Milk","I","Great"],
-["Cookies","Cheetah Piss","H","Great"],
-["Cookies","Collins Ave","H","NG"],
-["Cookies","Gary Payton","H","Great"],
-["Cookies","Georgia Pie","H","Great"],
-["Cookies","Hollywood","H","NG"],
-["Cookies","London Pound Cake","H","Great"],
-["Cookies","Orangutan","H","Great"],
-["Cookies","Ridgeline Lantz","H","Great"],
-["Cookies","Triangle Octane","H","NG"],
-["Cookies","Triple Scoop","H","Great"],
-["Cream of the Crop","Cake Crasher","H","Great"],
-["Cream of the Crop","Cherry Blossom","I-H","Great"],
-["Cream of the Crop","Citrus Cake","I-H","Great"],
-["Cream of the Crop","Fruity Pebbles OG","I-H","Great"],
-["Cream of the Crop","Gelana","I-H","Great"],
-["Cream of the Crop","Grape Kush","I-H","Great"],
-["Cream of the Crop","Grease Monkey","H","Great"],
-["Cream of the Crop","Heavy Cream","H","Great"],
-["Cream of the Crop","Jealous Mints","I-H","Great"],
-["Cream of the Crop","Kilauea Cake","I-H","Great"],
-["Cream of the Crop","Kush Z","H","OK"],
-["Cream of the Crop","Mandarin Cookies","I-H","Great"],
-["Cream of the Crop","Matcha Cake","I-H","Great"],
-["Cream of the Crop","Pink Guava","S-H","Great"],
-["Cream of the Crop","Purple Thunder","I-H","Great"],
-["Cream of the Crop","Resting Z-Face","I","OK"],
-["Cream of the Crop","Royal Icing","I-H","Great"],
-["Cream of the Crop","The Bling","I-H","NG"],
-["Cream of the Crop","Triumph","S","NG"],
-["Cream of the Crop","Velvet Pie","I-H","NG"],
-["Cresco","Rocket Fuel","H","NG"],
-["The Cure Company","Biscotti Sundae","H","NG"],
-["The Cure Company","Kinglato","H","Great"],
-["The Cure Company","Sundae Driver","H","NG"],
-["Ember Valley","Blueberry Muffin","S","NG"],
-["Ember Valley","Do Si De Leche","I","NG"],
-["Ember Valley","Ice Ice Valley","I","NG"],
-["Ember Valley","Jawbreaker","I","NG"],
-["Ember Valley","Kush Cake","H","NG"],
-["Ember Valley","MAC","S-H","Great"],
-["Ember Valley","Northern Fire","S","Great"],
-["Ember Valley","Pie Face OG","I-H","NG"],
-["Ember Valley","SFZ","H","NG"],
-["Ember Valley","Sundae Driver","I","NG"],
-["Ember Valley","Watermelon Gelato","I-H","NG"],
-["Ember Valley","Wedding Pie","I-H","NG"],
-["Ember Valley Black","Jawbreaker","I","Great"],
-["Field Family","Lemon Cherry Gelato","H","Great"],
-["Fig Farms","Animal Face","H","NG"],
-["Fig Farms","Animal Face X Zeclair","H","Great"],
-["Fig Farms","Animal Runtz","H","NG"],
-["Fig Farms","Azulcar","H","NG"],
-["Fig Farms","Blue Face","I-H","OK"],
-["Fig Farms","Blue Slush","H","NG"],
-["Fig Farms","Candicane","H","Great"],
-["Fig Farms","Cherry Martinelli","H","NG"],
-["Fig Farms","Chikitaz","H","Great"],
-["Fig Farms","Cocoa Mints","H","NG"],
-["Fig Farms","Couch Rider","I-H","Great"],
-["Fig Farms","Cranberry Cookie Dough","H","Great"],
-["Fig Farms","Dark Karma","H","NG"],
-["Fig Farms","Donut Shop","H","Great"],
-["Fig Farms","Dopamine","I","NG"],
-["Fig Farms","Fabulosa","I","OK"],
-["Fig Farms","Fig & Cherry","H","NG"],
-["Fig Farms","Fig OG","H","NG"],
-["Fig Farms","Guavascotti","H",""],
-["Fig Farms","Holy Cow","H","OK"],
-["Fig Farms","Holy Moly","S-H","OK"],
-["Fig Farms","International Orange","I","NG"],
-["Fig Farms","Italian Ice","H","NG"],
-["Fig Farms","Jelly Zappers","H","OK"],
-["Fig Farms","Koala Crack","S","Great"],
-["Fig Farms","Kronuts","H","OK"],
-["Fig Farms","Krypto Chronic 1","H","NG"],
-["Fig Farms","Krypto Nectarines","H","Great"],
-["Fig Farms","Kush Newton","I","NG"],
-["Fig Farms","Lemon Cherry Face","H","NG"],
-["Fig Farms","Lemon Cherry Gelato","H","NG"],
-["Fig Farms","Lucid Blue","H","NG"],
-["Fig Farms","Mad Dog 64","H","NG"],
-["Fig Farms","Momochi","H","Great"],
-["Fig Farms","Moonana Chronic","S-H","NG"],
-["Fig Farms","Moonana Wreck","S-H","NG"],
-["Fig Farms","Peach Wreck","H","NG"],
-["Fig Farms","Poppin Bottlez","H","OK"],
-["Fig Farms","Rainbow Fuego","H","Great"],
-["Fig Farms","Rainbow Runts 3","H","NG"],
-["Fig Farms","Rapper Weed","H","NG"],
-["Fig Farms","Red Bubblegum","H","NG"],
-["Fig Farms","Rock Tarts","H","NG"],
-["Fig Farms","Runtz X Italian Ice","H","NG"],
-["Fig Farms","Shady Scotti","H","Great"],
-["Fig Farms","Sherbanger F2","H","NG"],
-["Fig Farms","Sour Cherry Pie","H",""],
-["Fig Farms","Strudels","H","NG"],
-["Fig Farms","Sunrise","S","Great"],
-["Fig Farms","Trixxx","H","NG"],
-["Fig Farms","Whole Fruits","H","OK"],
-["Fig Farms","Z Type-S","H","Great"],
-["FloraCal","Khalifa Kush","H","NG"],
-["FloraCal","Lemon Bean","H","NG"],
-["Fresh Baked","Cherry Fritter","H","Great"],
-["Fresh Baked","Ice Cream Cake","H","Great"],
-["Fresh Baked","Orange Cookie Dough","H","NG"],
-["Fresh Baked","Versace","H","Great"],
-["Grandiflora","Super Charger","I","NG"],
-["Grandiflora","Ya Hemi","H","NG"],
-["Green Dawg","D1","H","OK"],
-["Green Dragon","80's Baby","S","Great"],
-["Green Dragon","Feria","H","Great"],
-["Green Dragon","Jeffery","H","Great"],
-["Green Dragon","Keisha","I","Great"],
-["Green Dragon","Malverde","I","Great"],
-["Green Dragon","Rico","H","Great"],
-["Green Dragon","Sicario","S","Great"],
-["Green Dragon","The Franchise","I","Great"],
-["Green Line","Dosi-Orange #9","I","NG"],
-["Green Line","Pink Guava","H","NG"],
-["Houseplant","Diablo Wind","S","Great"],
-["Houseplant","Pancake Ice","S","Great"],
-["Houseplant","Rain Band","I","Great"],
-["IC Collective","Chem Dog","H","NG"],
-["IC Collective","Chem Krush","H","Great"],
-["IC Collective","Diablo OG","I","NG"],
-["IC Collective","Grizz","H","NG"],
-["IC Collective","Peaks","H","NG"],
-["IC Collective","Sour Scout","H","NG"],
-["IC Collective","T.I.T.S.","H","Great"],
-["IC Collective","Ziablo","H","NG"],
-["Insane","Godfather","I-H","Great"],
-["Insane","Julia","H","Great"],
-["Jetfuel","Durban Poison","S-H","Great"],
-["Jetfuel","Jack Herer","S-H","Great"],
-["Joshwax","Strawberry OG #5","H","NG"],
-["Joshwax","Sudz","S-H","NG"],
-["Kings Garden","Kings Cake","I","NG"],
-["LA Kush","Black Gelato","H","Great"],
-["LA Kush","Blue Box","I","Great"],
-["LA Kush","Federal Reserve OG","I","NG"],
-["LA Kush","King of LA","I-H","Great"],
-["LA Kush","Kushberry Cheesecake","S","Great"],
-["LA Kush","LA Cake","I","NG"],
-["LA Kush","Red Box","I","NG"],
-["LA Kush","Zelato","I-H","NG"],
-["Lemonnade","Georgia Pie","H","Great"],
-["Lemonnade","Lemon Bean","H","Great"],
-["Lemonnade","Lemon Citrine","H","Great"],
-["Lemonnade","Lemon Pepper","H","Great"],
-["Lemonnade","Lychee","?","Great"],
-["Lemonnade","Medallin","H","NG"],
-["Lemonnade (Run the Jewels)","Ooh La la","H","Great"],
-["Leune","Desert Gold Mimosa","S-H","Great"],
-["Lit House","Dark Dosi","I","NG"],
-["Lit House","Lemon Lava","H","Great"],
-["Lumpy's","Apple Fritter","H","NG"],
-["Lumpy's","Cherry Meringue","H","NG"],
-["Lumpy's","Frank Bank","H","Great"],
-["Lumpy's","Reckless Rainbow","H","Great"],
-["Made","Pippen","H","NG"],
-["Marathon","Marathon Cookie","I","Great"],
-["Maven Genetics","Blue Lotus","I","Great"],
-["Maven Genetics","FKAFL","H","OK"],
-["Maven Genetics","French Lotus","","Great"],
-["Maven Genetics","Orange Truffle Souffle","S","NG"],
-["Maven Genetics","Peach Creme Gelato","I","Great"],
-["Maven Genetics","Shangri La","H","NG"],
-["Minntz","Orange Push Pop","H","NG"],
-["Monogram","#1","H","NG"],
-["Monogram","#3","H","NG"],
-["Napalm","Gelato","H","Great"],
-["Napalm","Wedding Cake","H","Great"],
-["No Till Kings","J1","S","OK"],
-["No Till Kings","Jack the Ripper","S","Great"],
-["No Till Kings","Lemon Banana Sherb","H","NG"],
-["No Till Kings","Mimosa","S","OK"],
-["No Till Kings","SFV X Animal Mints","I","OK"],
-["North Country Pharms","Dutch Crunch","H","NG"],
-["North Country Pharms","The Nilla","H","NG"],
-["Oakfruitland","Fortune Cookie","H","NG"],
-["Panacea","Cake","I-H","Great"],
-["Panacea","Forty One","I-H","NG"],
-["Panacea","Gummiez","S-H","NG"],
-["Panacea","PBS","H","Great"],
-["Panacea","Pie","H","NG"],
-["Panacea","Sedation","I","Great"],
-["Panacea","Slurry","I-H","NG"],
-["Panacea","Willies","S-H","Great"],
-["Peakz","Blazin Skunk","H","Great"],
-["Peakz","Highly Recommended","H","Great"],
-["Peakz","Sweet Tooth","H","Great"],
-["Peakz","Ube","H","Great"],
-["Phases","Reverie","I","NG"],
-["Pure Beauty","High Country","I","OK"],
-["Pure Beauty","Honey Runtz","I-H",""],
-["Pure Beauty","Lemon Head","S-H","OK"],
-["Pure Beauty","Sea Star","I","Great"],
-["Pure Beauty","Tangimal","S-H","Great"],
-["Richie Rich","Purple Cakebatter","H","Great"],
-["Royal Key","I.O.S. OG","H","NG"],
-["Saucey","Triple F'n OG","I-H","Great"],
-["Saucey","China White","S-H","NG"],
-["Saucey","GMO Crasher","I-H","Great"],
-["SCVA","Super Sour Diesel","S","NG"],
-["Sense","Dragon Glass","H","NG"],
-["Seven Leaves","Grease Monkey","I","Great"],
-["Seven Leaves","Purple Jellato","H","Great"],
-["Snowtill","Snowstorm","I","OK"],
-["Source","Quest","S-H","NG"],
-["Stiiizy","Pink Acai","H","NG"],
-["Synergy","Apple Fritter","H","NG"],
-["Synergy","Banana Bread","H","Great"],
-["Synergy","Banana Sundae","S","NG"],
-["Synergy","Golden State Banana","I","NG"],
-["Team Elite Genetics","Cookie Dough","I","NG"],
-["Team Elite Genetics","Crème de la Crème","I","Great"],
-["Team Elite Genetics","Diesel Truck OG","I-H","Great"],
-["Team Elite Genetics","GOAT Cheese","I-H","Great"],
-["Team Elite Genetics","Grandma's Cookies","I-H","Great"],
-["Team Elite Genetics","Nova Cane","H","Great"],
-["Team Elite Genetics","Orange Juice","S-H","Great"],
-["Team Elite Genetics","Orange Soda","S-H","Great"],
-["Team Elite Genetics","Peach Ozz","S-H","Great"],
-["Team Elite Genetics","Pearadice","S-H","NG"],
-["Team Elite Genetics","SH3RB3RT","I-H","NG"],
-["Team Elite Genetics","Stuffed Donut","I-H","Great"],
-["Team Elite Genetics","Styrofoam Cup","I","NG"],
-["Ted's Budz","Donkey Milk","I-H","NG"],
-["Ted's Budz","Lemon Tree","S-H","NG"],
-["Ted's Budz","Torta Pounder","H","NG"],
-["THC Design","Crescendo","S","Great"],
-["Top Shelf Cultivation","C-Land","H","Great"],
-["Top Shelf Cultivation","Samoas","H","Great"],
-["Top Shelf Cultivation","Whoa-Si-Whoa","I","Great"],
-["Traditional","Blue Donut","I","NG"],
-["Traditional","Happy Weed","H","NG"],
-["Turtle Pie","Cali Mocho","H","Great"],
-["Turtle Pie","Gabagool","H","Great"],
-["Turtle Pie","Grits 'n Jam","H","NG"],
-["Turtle Pie","Low Low","H","NG"],
-["Turtle Pie","Purple Sticky Rose","H","NG"],
-["Turtle Pie","Sunday Paper","H","NG"],
-["Turtle Pie","Tahiti Midnight","H","NG"],
-["Turtle Pie","X Rose","H","NG"],
-["Upnorth","Blackberry Kush","I","OK"],
-["Upnorth","Blue Dream","H","OK"],
-["Upnorth","Brazilian Haze","H","OK"],
-["Upnorth","Bubba Kush","I","OK"],
-["Upnorth","Cheetah Piss","H","Great"],
-["Upnorth","Dutch Treat","H","OK"],
-["Upnorth","Grape Ape","H","NG"],
-["Upnorth","Hindu Kush","I","OK"],
-["Upnorth","Master Kush","H","OK"],
-["Upnorth","Maui Wowie","H","OK"],
-["Upnorth","NF1","H","OK"],
-["Upnorth","Peach Z","H","NG"],
-["Upnorth","Platinum Gushers","H","NG"],
-["Upnorth","Strawberry Cough","S","OK"],
-["Upnorth","Tropsiclez","H","NG"],
-["Upnorth","White Widow","H","OK"],
-["West Coast Cure","Fritter OG","I","NG"],
-["West Coast Cure","Sensi Star","I","NG"],
-["Wizard Trees","Black Light","S","OK"],
-["Wizard Trees","Black Magic","H","OK"],
-["Wizard Trees","Blue Magic","H",""],
-["Wizard Trees","British Delight","I","OK"],
-["Wizard Trees","Jungle Juice","H","OK"],
-["Wizard Trees","Limelight","S","OK"],
-["Wizard Trees","Potion","I","OK"],
-["Wizard Trees","Tea Party","S","OK"],
-["Wizard Trees","Tide","H","OK"],
-["Wizard Trees","Windu","I","Great"],
-["Wizard Trees","Wizard OG","I","Great"],
-["Wizard Trees","Zoza","H","OK"],
-["WonderBrett","Beyond Blueberry","I","Great"],
-["WonderBrett","Black Orchid","I","NG"],
-["WonderBrett","Blueberry Purp","I-H","Great"],
-["WonderBrett","Cherry Trop","S-H","Great"],
-["WonderBrett","Chomp","H","Great"],
-["WonderBrett","Good News","","NG"],
-["WonderBrett","Grapes of Wrath","H","Great"],
-["WonderBrett","Lemon OZ Kush","S-H","Great"],
-["WonderBrett","Melon OG","I","Great"],
-["WonderBrett","Orange Banana","S-H","Great"],
-["WonderBrett","Orange Picasso","","Great"],
-["WonderBrett","Orange Sunset","S","Great"],
-["WonderBrett","OZ Kush","I","NG"],
-["WonderBrett","Papaya","I-H","Great"],
-["WonderBrett","Peach OZ","I-H","Great"],
-["WonderBrett","Pineapple OG","H","Great"],
-["WonderBrett","Pineapple OZ Kush","I-H","NG"],
-["WonderBrett","Pink Picasso","H","Great"],
-["WonderBrett","Strawberry Bliss","S","Great"],
-];
-
-// Normalize ratings — Good/Great both map to 🔥 (Great)
-function normalizeRating(r) {
-  const s = (r||'').trim();
-  if (s === 'Great' || s === 'Good' || s === 'Great\r' || s === 'Good\r') return 'Great';
-  if (s === 'OK' || s === 'OK +' || s === 'OK\r') return 'OK';
-  if (s === 'NG' || s === 'NG\r') return 'NG';
-  return '';
-}
-
-// Normalize type
-function normalizeType(t) {
-  const s = (t||'').trim().toUpperCase();
-  if (s === 'I-H' || s === 'IH') return 'I-H';
-  if (s === 'S-H' || s === 'SH') return 'S-H';
-  if (s === 'I') return 'I';
-  if (s === 'H') return 'H';
-  if (s === 'S') return 'S';
-  return '';
-}
-
-let data = [];
+// ── State ─────────────────────────────────────────────────────────────────────
+let data        = [];
 let currentSort = 'brand';
-let editId = null;
+let sortDir     = 'asc';
+let editId      = null;
 let selectedRating = '';
+let selectedType   = '';
+const activeChips  = new Set();
 
-// ── Supabase helpers ──────────────────────────────────────────────────────────
-
+// ── Supabase ──────────────────────────────────────────────────────────────────
 async function loadData() {
   showStatus('Loading…');
   const { data: rows, error } = await sb.from('strains').select('*');
-  if (error) { showStatus('Error loading data: ' + error.message, true); return; }
-
-  if (rows.length === 0) {
-    // First run — seed from RAW
-    showStatus('First run: seeding database…');
-    const seeds = RAW.map((r, i) => ({
-      id: i,
-      brand:  (r[0]||'').trim(),
-      strain: (r[1]||'').trim(),
-      type:   normalizeType(r[2]),
-      rating: normalizeRating(r[3]),
-      notes:  ''
-    }));
-    const { error: seedErr } = await sb.from('strains').insert(seeds);
-    if (seedErr) { showStatus('Seed error: ' + seedErr.message, true); return; }
-    data = seeds;
-  } else {
-    data = rows;
-  }
+  if (error) { showStatus('Error: ' + error.message, true); return; }
+  data = rows;
   hideStatus();
   populateBrandFilter();
   render();
@@ -1254,21 +712,13 @@ async function loadData() {
 
 async function upsertEntry(entry) {
   const { error } = await sb.from('strains').upsert(entry, { onConflict: 'id' });
-  if (error) { showStatus('Save error: ' + error.message, true); }
+  if (error) showStatus('Save error: ' + error.message, true);
 }
 
-// ── Status banner ─────────────────────────────────────────────────────────────
+// ── Status ────────────────────────────────────────────────────────────────────
 function showStatus(msg, isError) {
   let bar = document.getElementById('status-bar');
-  if (!bar) {
-    bar = document.createElement('div');
-    bar.id = 'status-bar';
-    bar.style.cssText = `position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
-      background:var(--surface2);border:1px solid var(--border2);border-radius:8px;
-      padding:10px 20px;font-family:'DM Mono',monospace;font-size:12px;
-      color:var(--muted);z-index:300;transition:opacity 0.3s;`;
-    document.body.appendChild(bar);
-  }
+  if (!bar) { bar = document.createElement('div'); bar.id = 'status-bar'; document.body.appendChild(bar); }
   bar.textContent = msg;
   bar.style.color = isError ? 'var(--coral)' : 'var(--muted)';
   bar.style.opacity = '1';
@@ -1280,271 +730,195 @@ function hideStatus() {
 
 // ── Brand filter ──────────────────────────────────────────────────────────────
 function populateBrandFilter() {
-  const brandSel = document.getElementById('filter-brand');
-  while (brandSel.options.length > 1) brandSel.remove(1);
-  const brands = [...new Set(data.map(d => d.brand).filter(Boolean))].sort();
-  brands.forEach(b => {
+  const sel = document.getElementById('filter-brand');
+  while (sel.options.length > 1) sel.remove(1);
+  [...new Set(data.map(d => d.brand).filter(Boolean))].sort().forEach(b => {
     const o = document.createElement('option');
-    o.value = b; o.textContent = b;
-    brandSel.appendChild(o);
+    o.value = b; o.textContent = b; sel.appendChild(o);
   });
-  brandSel.addEventListener('change', render);
+  sel.addEventListener('change', () => { updateFilterBtn(); render(); });
 }
 
 // ── Sort ──────────────────────────────────────────────────────────────────────
-let sortDir = 'asc';
-
 function setSort(col) {
-  if (currentSort === col) {
-    sortDir = sortDir === 'asc' ? 'desc' : 'asc';
-  } else {
-    currentSort = col;
-    sortDir = 'asc';
-  }
+  sortDir = currentSort === col ? (sortDir === 'asc' ? 'desc' : 'asc') : 'asc';
+  currentSort = col;
   updateSortHeaders();
   render();
 }
-
 function updateSortHeaders() {
   ['brand','strain','type','rating'].forEach(col => {
-    const el = document.getElementById('col-' + col);
-    const arrow = document.getElementById('arrow-' + col);
-    if (!el) return;
-    el.classList.toggle('sorted', currentSort === col);
-    if (currentSort === col) {
-      arrow.textContent = sortDir === 'asc' ? '▲' : '▼';
-    }
+    document.getElementById('col-' + col)?.classList.toggle('sorted', currentSort === col);
+    const a = document.getElementById('arrow-' + col);
+    if (a && currentSort === col) a.textContent = sortDir === 'asc' ? '▲' : '▼';
   });
 }
 
-// ── Filter state ──────────────────────────────────────────────────────────────
-const activeChips = new Set(); // 'great','ok','ng','unrated','I','H','S','IH','SH'
-
+// ── Chips ─────────────────────────────────────────────────────────────────────
 function toggleChip(key) {
-  if (activeChips.has(key)) activeChips.delete(key);
-  else activeChips.add(key);
-  updateChipUI();
-  render();
+  activeChips.has(key) ? activeChips.delete(key) : activeChips.add(key);
+  updateChipUI(); updateFilterBtn(); render();
 }
-
 function updateChipUI() {
-  const map = {
-    great: 'on-great', ok: 'on-ok', ng: 'on-ng', unrated: 'on',
-    I: 'on', H: 'on', S: 'on', IH: 'on', SH: 'on'
-  };
-  Object.keys(map).forEach(key => {
-    const el = document.getElementById('chip-' + key);
+  const map = { great:'on-great', ok:'on-ok', ng:'on-ng', unrated:'on', I:'on', H:'on', S:'on', IH:'on', SH:'on' };
+  Object.keys(map).forEach(k => {
+    const el = document.getElementById('chip-' + k);
     if (!el) return;
     el.classList.remove('on','on-great','on-ok','on-ng');
-    if (activeChips.has(key)) el.classList.add(map[key]);
+    if (activeChips.has(k)) el.classList.add(map[k]);
   });
-  // Update filter button active state
-  const hasFilters = activeChips.size > 0 || document.getElementById('filter-brand').value;
-  document.getElementById('btn-filter').classList.toggle('active', !!hasFilters);
 }
-
-function openFilterPanel() {
-  document.getElementById('filter-panel-bg').classList.add('open');
+function updateFilterBtn() {
+  const has = activeChips.size > 0 || !!document.getElementById('filter-brand').value;
+  document.getElementById('btn-filter').classList.toggle('active', has);
 }
-function closeFilterPanel() {
-  document.getElementById('filter-panel-bg').classList.remove('open');
-  // update filter button dot after closing
-  const hasFilters = activeChips.size > 0 || document.getElementById('filter-brand').value;
-  document.getElementById('btn-filter').classList.toggle('active', !!hasFilters);
-}
-
+function openFilterPanel()  { document.getElementById('filter-panel-bg').classList.add('open'); }
+function closeFilterPanel() { document.getElementById('filter-panel-bg').classList.remove('open'); updateFilterBtn(); }
 function clearFilters() {
-  activeChips.clear();
-  document.getElementById('filter-brand').value = '';
-  updateChipUI();
-  render();
+  activeChips.clear(); document.getElementById('filter-brand').value = '';
+  updateChipUI(); updateFilterBtn(); render();
 }
 
-// ── Filtering ─────────────────────────────────────────────────────────────────
+// ── Filter / Sort ─────────────────────────────────────────────────────────────
 function getFiltered() {
-  const q = document.getElementById('search').value.toLowerCase().trim();
+  const q      = document.getElementById('search').value.toLowerCase().trim();
   const brandF = document.getElementById('filter-brand').value;
-
-  // Which ratings are active?
-  const ratingChips = ['great','ok','ng','unrated'].filter(k => activeChips.has(k));
-  // Which types are active?
-  const typeChips   = ['I','H','S','IH','SH'].filter(k => activeChips.has(k));
-  const typeValues  = { I:'I', H:'H', S:'S', IH:'I-H', SH:'S-H' };
-
+  const rChips = ['great','ok','ng','unrated'].filter(k => activeChips.has(k));
+  const tChips = ['I','H','S','IH','SH'].filter(k => activeChips.has(k));
+  const tMap   = { I:'I', H:'H', S:'S', IH:'I-H', SH:'S-H' };
   return data.filter(d => {
     if (q && !d.strain.toLowerCase().includes(q) && !d.brand.toLowerCase().includes(q)) return false;
     if (brandF && d.brand !== brandF) return false;
-
-    if (ratingChips.length) {
-      const match = ratingChips.some(k => {
-        if (k === 'great')   return d.rating === 'Great';
-        if (k === 'ok')      return d.rating === 'OK';
-        if (k === 'ng')      return d.rating === 'NG';
-        if (k === 'unrated') return d.rating === '';
-        return false;
-      });
-      if (!match) return false;
+    if (rChips.length) {
+      if (!rChips.some(k =>
+        k==='great' ? d.rating==='Great' : k==='ok' ? d.rating==='OK' :
+        k==='ng'    ? d.rating==='NG'    : d.rating===''
+      )) return false;
     }
-
-    if (typeChips.length) {
-      const match = typeChips.some(k => d.type === typeValues[k]);
-      if (!match) return false;
-    }
-
+    if (tChips.length && !tChips.some(k => d.type === tMap[k])) return false;
     return true;
   });
 }
-
-// ── Sorting ───────────────────────────────────────────────────────────────────
 function getSorted(arr) {
-  const ratingOrder = { 'Great': 0, 'OK': 1, 'NG': 2, '': 3 };
-  const typeOrder   = { 'I': 0, 'I-H': 1, 'H': 2, 'S-H': 3, 'S': 4, '': 5 };
-  const dir = sortDir === 'asc' ? 1 : -1;
-
+  const rO = { Great:0, OK:1, NG:2, '':3 };
+  const tO = { I:0, 'I-H':1, H:2, 'S-H':3, S:4, '':5 };
+  const d  = sortDir === 'asc' ? 1 : -1;
   return [...arr].sort((a, b) => {
-    let cmp = 0;
-    if (currentSort === 'brand') {
-      cmp = a.brand.localeCompare(b.brand) || a.strain.localeCompare(b.strain);
-    } else if (currentSort === 'strain') {
-      cmp = a.strain.localeCompare(b.strain);
-    } else if (currentSort === 'rating') {
-      cmp = (ratingOrder[a.rating] ?? 3) - (ratingOrder[b.rating] ?? 3) || a.brand.localeCompare(b.brand);
-    } else if (currentSort === 'type') {
-      cmp = (typeOrder[a.type] ?? 5) - (typeOrder[b.type] ?? 5) || a.brand.localeCompare(b.brand);
-    }
-    return cmp * dir;
+    let c = 0;
+    if      (currentSort==='brand')  c = a.brand.localeCompare(b.brand) || a.strain.localeCompare(b.strain);
+    else if (currentSort==='strain') c = a.strain.localeCompare(b.strain);
+    else if (currentSort==='rating') c = (rO[a.rating]??3)-(rO[b.rating]??3) || a.brand.localeCompare(b.brand);
+    else if (currentSort==='type')   c = (tO[a.type]??5)-(tO[b.type]??5)     || a.brand.localeCompare(b.brand);
+    return c * d;
   });
 }
 
+// ── Helpers ───────────────────────────────────────────────────────────────────
 function typeBadgeClass(t) {
-  if (t === 'I') return 'type-I';
-  if (t === 'H') return 'type-H';
-  if (t === 'S') return 'type-S';
-  if (t === 'I-H') return 'type-IH';
-  if (t === 'S-H') return 'type-SH';
-  return 'type-unknown';
+  return { I:'type-I', H:'type-H', S:'type-S', 'I-H':'type-IH', 'S-H':'type-SH' }[t] || 'type-unknown';
 }
-
 function typeLabel(t) {
-  const map = { 'I':'Indica','H':'Hybrid','S':'Sativa','I-H':'I-Hybrid','S-H':'S-Hybrid' };
-  return map[t] || (t || '—');
+  return { I:'I', H:'H', S:'S', 'I-H':'I-H', 'S-H':'S-H' }[t] || (t||'—');
 }
-
 function ratingEmoji(r) {
-  if (r === 'Great') return '🔥';
-  if (r === 'OK') return '🌿';
-  if (r === 'NG') return '🗑️';
-  return '<span style="color:var(--dim);font-size:13px">—</span>';
+  return r==='Great' ? '🔥' : r==='OK' ? '🌿' : r==='NG' ? '🗑️' : '<span style="color:var(--dim);font-size:12px">—</span>';
 }
-
-function render() {
-  const filtered = getSorted(getFiltered());
-  const listBody = document.getElementById('list-body');
-  const empty = document.getElementById('empty');
-  const greatCount = data.filter(d => d.rating === 'Great').length;
-  const ngCount = data.filter(d => d.rating === 'NG').length;
-
-  document.getElementById('stat-total').textContent = data.length;
-  document.getElementById('stat-great').textContent = greatCount;
-  document.getElementById('stat-ng').textContent = ngCount;
-  document.getElementById('result-text').innerHTML =
-    `Showing <strong>${filtered.length}</strong> of <strong>${data.length}</strong> strains`;
-
-  if (!filtered.length) {
-    listBody.innerHTML = '';
-    empty.style.display = 'block';
-    return;
-  }
-  empty.style.display = 'none';
-
-  listBody.innerHTML = filtered.map(d => `
-    <div class="row" onclick="openEdit(${d.id})">
-      <div class="row-brand">${escHtml(d.brand) || '<span style="color:var(--dim)">—</span>'}</div>
-      <div class="row-strain">${escHtml(d.strain)}</div>
-      <div><span class="type-badge ${typeBadgeClass(d.type)}">${typeLabel(d.type)}</span></div>
-      <div class="rating-emoji">${ratingEmoji(d.rating)}</div>
-    </div>
-  `).join('');
-}
-
-function escHtml(s) {
+function esc(s) {
   return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+// ── Render ────────────────────────────────────────────────────────────────────
+function render() {
+  const filtered = getSorted(getFiltered());
+  const listBody = document.getElementById('list-body');
+  const empty    = document.getElementById('empty');
+  document.getElementById('stat-total').textContent = data.length;
+  document.getElementById('stat-great').textContent = data.filter(d=>d.rating==='Great').length;
+  document.getElementById('stat-ng').textContent    = data.filter(d=>d.rating==='NG').length;
+  document.getElementById('result-text').innerHTML  =
+    `Showing <strong>${filtered.length}</strong> of <strong>${data.length}</strong> strains`;
+  if (!filtered.length) { listBody.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display = 'none';
+  listBody.innerHTML = filtered.map(d => `
+    <div class="row" onclick="openEdit(${d.id})">
+      <div class="row-brand">${esc(d.brand)||'<span style="color:var(--dim)">—</span>'}</div>
+      <div class="row-strain">${esc(d.strain)}</div>
+      <div><span class="type-badge ${typeBadgeClass(d.type)}">${typeLabel(d.type)}</span></div>
+      <div class="rating-emoji">${ratingEmoji(d.rating)}</div>
+    </div>`).join('');
+}
+
+// ── Modal ─────────────────────────────────────────────────────────────────────
 function openEdit(id) {
   const d = data.find(x => x.id === id);
   if (!d) return;
   editId = id;
-  document.getElementById('modal-brand-label').textContent = d.brand;
-  document.getElementById('modal-strain-label').textContent = d.strain;
-  document.getElementById('edit-brand').value = d.brand;
+  document.getElementById('modal-brand-label').textContent  = d.brand;
+  document.getElementById('modal-strain-label').textContent = d.strain || 'Edit Entry';
+  document.getElementById('edit-brand').value  = d.brand;
   document.getElementById('edit-strain').value = d.strain;
-  document.getElementById('edit-type').value = d.type || '';
-  document.getElementById('edit-notes').value = d.notes || '';
+  document.getElementById('edit-notes').value  = d.notes || '';
   selectedRating = d.rating;
+  selectedType   = d.type || '';
   updateRatingUI();
+  updateTypeUI();
   document.getElementById('modal').classList.add('open');
 }
-
 function openAdd() {
   editId = null;
-  document.getElementById('modal-brand-label').textContent = 'New Entry';
+  document.getElementById('modal-brand-label').textContent  = 'New Entry';
   document.getElementById('modal-strain-label').textContent = 'Add Strain';
-  document.getElementById('edit-brand').value = '';
+  document.getElementById('edit-brand').value  = '';
   document.getElementById('edit-strain').value = '';
-  document.getElementById('edit-type').value = '';
-  document.getElementById('edit-notes').value = '';
+  document.getElementById('edit-notes').value  = '';
   selectedRating = '';
+  selectedType   = '';
   updateRatingUI();
+  updateTypeUI();
   document.getElementById('modal').classList.add('open');
 }
-
 function closeModal() {
   document.getElementById('modal').classList.remove('open');
   editId = null;
 }
 
-function selectRating(r) {
-  selectedRating = r;
-  updateRatingUI();
+function selectRating(r) { selectedRating = r; updateRatingUI(); }
+function updateRatingUI() {
+  ['great','ok','ng','unrated'].forEach(k => document.getElementById('opt-'+k).className = 'rating-opt');
+  if      (selectedRating==='Great') document.getElementById('opt-great').classList.add('sel-great');
+  else if (selectedRating==='OK')    document.getElementById('opt-ok').classList.add('sel-ok');
+  else if (selectedRating==='NG')    document.getElementById('opt-ng').classList.add('sel-ng');
+  else                               document.getElementById('opt-unrated').classList.add('sel-unrated');
 }
 
-function updateRatingUI() {
-  ['great','ok','ng','unrated'].forEach(k => {
-    document.getElementById('opt-' + k).className = 'rating-opt';
-  });
-  if (selectedRating === 'Great') document.getElementById('opt-great').classList.add('sel-great');
-  else if (selectedRating === 'OK') document.getElementById('opt-ok').classList.add('sel-ok');
-  else if (selectedRating === 'NG') document.getElementById('opt-ng').classList.add('sel-ng');
-  else document.getElementById('opt-unrated').classList.add('sel-unrated');
+function selectType(t) { selectedType = t; updateTypeUI(); }
+function updateTypeUI() {
+  const map = { 'I':'I', 'I-H':'IH', 'H':'H', 'S-H':'SH', 'S':'S' };
+  ['I','IH','H','SH','S'].forEach(k => document.getElementById('tbtn-'+k).className = 'type-btn');
+  const key = map[selectedType];
+  if (key) document.getElementById('tbtn-'+key).classList.add('sel-'+key);
 }
 
 async function saveEntry() {
-  const brand = document.getElementById('edit-brand').value.trim();
+  const brand  = document.getElementById('edit-brand').value.trim();
   const strain = document.getElementById('edit-strain').value.trim();
-  const type = normalizeType(document.getElementById('edit-type').value);
-  const notes = document.getElementById('edit-notes').value.trim();
-
+  const notes  = document.getElementById('edit-notes').value.trim();
   if (!strain) { alert('Strain name is required.'); return; }
-
   let entry;
   if (editId !== null) {
     const idx = data.findIndex(d => d.id === editId);
-    entry = { ...data[idx], brand, strain, type, rating: selectedRating, notes };
+    entry = { ...data[idx], brand, strain, type: selectedType, rating: selectedRating, notes };
     data[idx] = entry;
   } else {
     const newId = data.length > 0 ? Math.max(...data.map(d => d.id)) + 1 : 0;
-    entry = { id: newId, brand, strain, type, rating: selectedRating, notes };
+    entry = { id: newId, brand, strain, type: selectedType, rating: selectedRating, notes };
     data.push(entry);
-    // Add to brand filter if new
-    const brandSel = document.getElementById('filter-brand');
-    if (brand && !Array.from(brandSel.options).some(o => o.value === brand)) {
+    const sel = document.getElementById('filter-brand');
+    if (brand && !Array.from(sel.options).some(o => o.value === brand)) {
       const o = document.createElement('option');
-      o.value = brand; o.textContent = brand;
-      brandSel.appendChild(o);
+      o.value = brand; o.textContent = brand; sel.appendChild(o);
     }
   }
-
   showStatus('Saving…');
   await upsertEntry(entry);
   hideStatus();
@@ -1552,35 +926,19 @@ async function saveEntry() {
   render();
 }
 
-// Close modal on bg click
-document.getElementById('modal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
-
-// Wire search
-document.getElementById('search').addEventListener('input', render);
-
-// Init sort header state
-updateSortHeaders();
-
 // ── Auth ──────────────────────────────────────────────────────────────────────
-
 function showApp()   { document.getElementById('login-screen').classList.remove('visible'); }
 function showLogin() { document.getElementById('login-screen').classList.add('visible'); }
 
 async function doLogin() {
-  const email    = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
-  const errEl    = document.getElementById('login-error');
-  errEl.textContent = '';
-
-  if (!email || !password) { errEl.textContent = 'Email and password required.'; return; }
-
-  const { error } = await sb.auth.signInWithPassword({ email, password });
-  if (error) { errEl.textContent = error.message; return; }
-  // onAuthStateChange will fire and load the app
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-password').value;
+  const err   = document.getElementById('login-error');
+  err.textContent = '';
+  if (!email || !pass) { err.textContent = 'Email and password required.'; return; }
+  const { error } = await sb.auth.signInWithPassword({ email, password: pass });
+  if (error) err.textContent = error.message;
 }
-
 async function doLogout() {
   await sb.auth.signOut();
   data = [];
@@ -1588,26 +946,17 @@ async function doLogout() {
   showLogin();
 }
 
-// Enter key on password field triggers login
-document.getElementById('login-password').addEventListener('keydown', e => {
-  if (e.key === 'Enter') doLogin();
-});
+document.getElementById('login-password').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
+document.getElementById('search').addEventListener('input', render);
 
-// Listen for auth state changes — single source of truth for app visibility
-sb.auth.onAuthStateChange((_event, session) => {
-  if (session) {
-    showApp();
-    loadData();
-  } else {
-    showLogin();
-  }
+sb.auth.onAuthStateChange((_e, session) => {
+  if (session) { showApp(); loadData(); } else showLogin();
 });
-
-// Boot — check for existing session
 sb.auth.getSession().then(({ data: { session } }) => {
-  if (session) { showApp(); loadData(); }
-  else { showLogin(); }
+  if (session) { showApp(); loadData(); } else showLogin();
 });
+
+updateSortHeaders();
 </script>
 </body>
 </html>

@@ -269,6 +269,8 @@ input[type="text"]::placeholder { color: var(--dim); }
   .type-label-full  { display: none; }
   .type-label-short { display: inline; }
 }
+
+.empty {
   padding: 60px 20px;
   text-align: center;
   color: var(--dim);
@@ -281,47 +283,75 @@ input[type="text"]::placeholder { color: var(--dim); }
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
-  z-index: 200;
-  align-items: flex-start;
-  justify-content: flex-end;
-  backdrop-filter: blur(3px);
-  padding: 64px 16px 16px;
+  background: rgba(0,0,0,0.75);
+  z-index: 400;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  padding: 20px;
 }
 .filter-panel-bg.open { display: flex; }
+
 .filter-panel {
   background: var(--surface);
   border: 1px solid var(--border2);
-  border-radius: 16px;
-  padding: 22px;
-  width: 290px;
-  max-width: calc(100vw - 32px);
-  animation: slideUp 0.18s ease;
-  max-height: calc(100dvh - 80px);
+  border-radius: 20px;
+  padding: 32px;
+  width: 100%;
+  max-width: 560px;
+  max-height: calc(100dvh - 40px);
   overflow-y: auto;
+  animation: slideUp 0.2s ease;
 }
-.filter-panel h3 {
+
+.filter-panel-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+.filter-panel-top h3 {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 20px;
-  letter-spacing: 2px;
+  font-size: 28px;
+  letter-spacing: 3px;
   color: var(--text);
-  margin-bottom: 18px;
 }
-.filter-section { margin-bottom: 18px; }
+.filter-close-btn {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 18px;
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.filter-close-btn:hover { color: var(--text); border-color: var(--purple); }
+
+.filter-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 40px;
+  margin-bottom: 28px;
+}
+.filter-section-brand { grid-column: 1 / -1; }
+
 .filter-section label {
   display: block;
   font-size: 10px;
   color: var(--muted);
   font-family: 'DM Mono', monospace;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
-.chip-group { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip-group { display: flex; flex-wrap: wrap; gap: 7px; }
 .chip {
-  font-size: 11px;
+  font-size: 12px;
   font-family: 'DM Mono', monospace;
-  padding: 6px 12px;
+  padding: 7px 14px;
   border-radius: 100px;
   border: 1px solid var(--border2);
   background: var(--bg3);
@@ -331,11 +361,12 @@ input[type="text"]::placeholder { color: var(--dim); }
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
-.chip:hover { color: var(--text); }
+.chip:hover { color: var(--text); border-color: var(--purple); }
 .chip.on        { background: var(--purple-dim); border-color: var(--purple); color: var(--purple); }
-.chip.on-great  { background: var(--teal-dim); border-color: var(--teal); color: var(--teal); }
+.chip.on-great  { background: var(--teal-dim);   border-color: var(--teal);   color: var(--teal); }
 .chip.on-ok     { background: rgba(45,180,100,0.12); border-color: rgba(45,180,100,0.3); color: #4dc87a; }
-.chip.on-ng     { background: var(--coral-dim); border-color: var(--coral); color: var(--coral); }
+.chip.on-ng     { background: var(--coral-dim);  border-color: var(--coral);  color: var(--coral); }
+
 .filter-brand-select { width: 100%; }
 select {
   background: var(--bg3);
@@ -355,19 +386,34 @@ select {
   transition: border-color 0.2s;
 }
 select:focus { border-color: var(--purple); }
-.filter-panel-actions { display: flex; gap: 10px; margin-top: 4px; }
+
+.filter-panel-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
 .btn-clear-filters {
-  flex: 1; padding: 10px; border-radius: 8px;
-  font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer;
+  flex: 1; padding: 12px; border-radius: 8px;
+  font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer;
   border: 1px solid var(--border2); background: var(--bg3); color: var(--muted); transition: all 0.15s;
 }
 .btn-clear-filters:hover { color: var(--text); }
 .btn-apply-filters {
-  flex: 1; padding: 10px; border-radius: 8px;
-  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer;
+  flex: 2; padding: 12px; border-radius: 8px;
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer;
   border: 1px solid var(--purple); background: var(--purple-dim); color: var(--purple); transition: all 0.15s;
 }
 .btn-apply-filters:hover { background: rgba(167,139,250,0.2); }
+
+@media (max-width: 540px) {
+  .filter-panel { padding: 22px 18px; border-radius: 16px; }
+  .filter-sections { grid-template-columns: 1fr; gap: 20px; }
+  .filter-section-brand { grid-column: 1; }
+  .filter-panel-top h3 { font-size: 22px; }
+  .filter-panel-actions { gap: 8px; }
+  .btn-apply-filters { flex: 1; }
+}
 
 /* ── LOGIN ───────────────────────────────────────────────────────────────────── */
 .login-screen {
@@ -549,9 +595,8 @@ select:focus { border-color: var(--purple); }
   .rating-emoji { font-size: 15px; }
 
   .modal { padding: 20px 18px; }
-  .modal-strain { font-size: 20px; margin-bottom: 14px; }
+  .modal-strain { font-size: 28px; }
   .type-btn { font-size: 10px; padding: 8px 2px; }
-  .filter-panel-bg { padding: 60px 12px 12px; }
 }
 
 /* Landscape phone */
@@ -610,32 +655,37 @@ select:focus { border-color: var(--purple); }
 
 <!-- FILTER PANEL -->
 <div class="filter-panel-bg" id="filter-panel-bg" onclick="if(event.target===this)closeFilterPanel()">
-  <div class="filter-panel">
-    <h3>Filters</h3>
-    <div class="filter-section">
-      <label>Rating</label>
-      <div class="chip-group">
-        <div class="chip" id="chip-great"   onclick="toggleChip('great')">🔥 Fire</div>
-        <div class="chip" id="chip-ok"      onclick="toggleChip('ok')">🌿 Fresh</div>
-        <div class="chip" id="chip-ng"      onclick="toggleChip('ng')">🗑️ Trash</div>
-        <div class="chip" id="chip-unrated" onclick="toggleChip('unrated')">— Unrated</div>
-      </div>
+  <div class="filter-panel" onclick="event.stopPropagation()">
+    <div class="filter-panel-top">
+      <h3>Filters</h3>
+      <div class="filter-close-btn" onclick="closeFilterPanel()">✕</div>
     </div>
-    <div class="filter-section">
-      <label>Type</label>
-      <div class="chip-group">
-        <div class="chip" id="chip-I"  onclick="toggleChip('I')">I</div>
-        <div class="chip" id="chip-IH" onclick="toggleChip('IH')">I-H</div>
-        <div class="chip" id="chip-H"  onclick="toggleChip('H')">H</div>
-        <div class="chip" id="chip-SH" onclick="toggleChip('SH')">S-H</div>
-        <div class="chip" id="chip-S"  onclick="toggleChip('S')">S</div>
+    <div class="filter-sections">
+      <div class="filter-section">
+        <label>Rating</label>
+        <div class="chip-group">
+          <div class="chip" id="chip-great"   onclick="toggleChip('great')">🔥 Fire</div>
+          <div class="chip" id="chip-ok"      onclick="toggleChip('ok')">🌿 Fresh</div>
+          <div class="chip" id="chip-ng"      onclick="toggleChip('ng')">🗑️ Trash</div>
+          <div class="chip" id="chip-unrated" onclick="toggleChip('unrated')">— Unrated</div>
+        </div>
       </div>
-    </div>
-    <div class="filter-section">
-      <label>Brand</label>
-      <select id="filter-brand" class="filter-brand-select">
-        <option value="">All brands</option>
-      </select>
+      <div class="filter-section">
+        <label>Type</label>
+        <div class="chip-group">
+          <div class="chip" id="chip-I"  onclick="toggleChip('I')">Indica</div>
+          <div class="chip" id="chip-IH" onclick="toggleChip('IH')">Indica Hybrid</div>
+          <div class="chip" id="chip-H"  onclick="toggleChip('H')">Hybrid</div>
+          <div class="chip" id="chip-SH" onclick="toggleChip('SH')">Sativa Hybrid</div>
+          <div class="chip" id="chip-S"  onclick="toggleChip('S')">Sativa</div>
+        </div>
+      </div>
+      <div class="filter-section filter-section-brand">
+        <label>Brand</label>
+        <select id="filter-brand" class="filter-brand-select">
+          <option value="">All brands</option>
+        </select>
+      </div>
     </div>
     <div class="filter-panel-actions">
       <button class="btn-clear-filters" onclick="clearFilters()">Clear All</button>

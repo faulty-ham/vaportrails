@@ -697,15 +697,21 @@ let sortDir     = 'asc';
 let editId      = null;
 let selectedRating = '';
 let selectedType   = '';
+let dataLoaded     = false;
 const activeChips  = new Set();
 
 // ── Supabase ──────────────────────────────────────────────────────────────────
 async function loadData() {
-  showStatus('Loading…');
+  if (dataLoaded) return;   // prevent double-fire from onAuthStateChange + getSession
+  dataLoaded = true;
+  document.getElementById('result-text').textContent = 'Loading…';
   const { data: rows, error } = await sb.from('strains').select('*');
-  if (error) { showStatus('Error: ' + error.message, true); return; }
+  if (error) {
+    document.getElementById('result-text').innerHTML =
+      `<span style="color:var(--coral)">Error loading data: ${error.message}</span>`;
+    return;
+  }
   data = rows;
-  hideStatus();
   populateBrandFilter();
   render();
 }
@@ -942,6 +948,7 @@ async function doLogin() {
 async function doLogout() {
   await sb.auth.signOut();
   data = [];
+  dataLoaded = false;
   document.getElementById('list-body').innerHTML = '';
   showLogin();
 }
@@ -949,11 +956,20 @@ async function doLogout() {
 document.getElementById('login-password').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
 document.getElementById('search').addEventListener('input', render);
 
-sb.auth.onAuthStateChange((_e, session) => {
-  if (session) { showApp(); loadData(); } else showLogin();
-});
+// Single auth boot — use getSession only to avoid double loadData
 sb.auth.getSession().then(({ data: { session } }) => {
   if (session) { showApp(); loadData(); } else showLogin();
+});
+
+// onAuthStateChange handles login/logout events after initial load
+sb.auth.onAuthStateChange((_e, session) => {
+  if (session) {
+    showApp();
+    if (!dataLoaded) loadData();
+  } else {
+    dataLoaded = false;
+    showLogin();
+  }
 });
 
 updateSortHeaders();

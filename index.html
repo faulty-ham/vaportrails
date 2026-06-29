@@ -707,6 +707,7 @@ async function doLogout() {
 
 document.getElementById('login-password').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 document.getElementById('search').addEventListener('input', render);
+document.getElementById('search').addEventListener('keydown', e => { if (e.key === 'Enter') e.target.blur(); });
 
 sb.auth.getSession().then(({ data: { session } }) => {
   if (session) { showApp(); loadData(); } else showLogin();

@@ -418,7 +418,7 @@
  {"id":417,"brand":"WonderBrett","strain":"Pineapple OZ Kush","type":"I-H","rating":"NG","notes":""}, 
  {"id":418,"brand":"WonderBrett","strain":"Pink Picasso","type":"H","rating":"Great","notes":""}, 
  {"id":419,"brand":"WonderBrett","strain":"Strawberry Bliss","type":"S","rating":"Great","notes":""}, 
- {"id":420,"brand":"Fig Farms","strain":"Grapefruit Giggles","type":"S-H","rating":"","notes":""}, 
- {"id":421,"brand":"Fig Farms","strain":"Zhampu","type":"H","rating":"","notes":""}, 
+ {"id":420,"brand":"Fig Farms","strain":"Grapefruit Giggles","type":"S-H","rating":"OK","notes":""}, 
+ {"id":421,"brand":"Fig Farms","strain":"Zhampu","type":"H","rating":"Great","notes":""}, 
  {"id":422,"brand":"Fig Farms","strain":"Strawberry Guava","type":"H","rating":"","notes":""}, 
  {"id":423,"brand":"Fig Farms","strain":"Humboldt OG","type":"I","rating":"","notes":""}]

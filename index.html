@@ -125,6 +125,7 @@ input[type="text"]::placeholder { color: var(--dim); }
 }
 .btn-clear:hover { border-color: var(--coral); color: var(--coral); }
 .btn-clear.hidden { display: none; }
+.btn-add {
   background: var(--amber-dim); border: 1px solid var(--amber); border-radius: 8px;
   color: var(--amber); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
   padding: 9px 16px; cursor: pointer; transition: all 0.15s; white-space: nowrap;
@@ -443,9 +444,7 @@ input[type="text"]::placeholder { color: var(--dim); }
       </div>
       <div class="filter-section filter-section-brand">
         <label>Brand</label>
-        <select id="filter-brand" class="field" style="width:100%">
-          <option value="">All brands</option>
-        </select>
+        <input type="text" id="filter-brand" placeholder="Type a brand name…" list="brand-list" autocomplete="off" style="padding:10px 14px;font-size:16px;border-radius:8px;border:1px solid var(--border2);background:var(--bg3);color:var(--text);width:100%;outline:none;font-family:'DM Sans',sans-serif;transition:border-color 0.2s;" oninput="updateFilterBtn();render()">
       </div>
     </div>
     <div class="filter-panel-actions">
@@ -562,17 +561,12 @@ function hideStatus() { document.getElementById('status-bar').style.opacity = '0
 
 // ── Brand filter ──
 function populateBrandFilter() {
-  const sel = document.getElementById('filter-brand');
-  const dl  = document.getElementById('brand-list');
-  while (sel.options.length > 1) sel.remove(1);
+  const dl = document.getElementById('brand-list');
   dl.innerHTML = '';
   [...new Set(data.map(d => d.brand).filter(Boolean))].sort().forEach(b => {
     const o = document.createElement('option');
-    o.value = b; o.textContent = b; sel.appendChild(o);
-    const od = document.createElement('option');
-    od.value = b; dl.appendChild(od);
+    o.value = b; dl.appendChild(o);
   });
-  sel.addEventListener('change', () => { updateFilterBtn(); render(); });
 }
 
 // ── Sort ──
@@ -740,10 +734,10 @@ async function saveEntry() {
     const newId = data.length ? Math.max(...data.map(d => d.id)) + 1 : 0;
     entry = { id: newId, brand, strain, type: selectedType, rating: selectedRating, notes };
     data.push(entry);
-    const sel = document.getElementById('filter-brand');
-    if (brand && !Array.from(sel.options).some(o => o.value === brand)) {
+    const dl = document.getElementById('brand-list');
+    if (brand && !Array.from(dl.options).some(o => o.value === brand)) {
       const o = document.createElement('option');
-      o.value = brand; o.textContent = brand; sel.appendChild(o);
+      o.value = brand; dl.appendChild(o);
     }
   }
   showStatus('Saving…');

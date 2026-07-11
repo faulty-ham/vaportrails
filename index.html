@@ -24,6 +24,7 @@
   --c-SH: #f0a832; --c-SH-dim: rgba(240,168,50,0.12);  --c-SH-bd: rgba(240,168,50,0.2);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 165%; }
 body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100dvh; overflow-x: hidden; }
 
 /* ── SHARED ── */
@@ -734,15 +735,11 @@ async function saveEntry() {
     const newId = data.length ? Math.max(...data.map(d => d.id)) + 1 : 0;
     entry = { id: newId, brand, strain, type: selectedType, rating: selectedRating, notes };
     data.push(entry);
-    const dl = document.getElementById('brand-list');
-    if (brand && !Array.from(dl.options).some(o => o.value === brand)) {
-      const o = document.createElement('option');
-      o.value = brand; dl.appendChild(o);
-    }
   }
   showStatus('Saving…');
   await upsertEntry(entry);
   hideStatus();
+  populateBrandFilter();
   closeModal();
   render();
 }

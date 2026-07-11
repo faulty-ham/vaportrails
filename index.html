@@ -408,13 +408,12 @@ input[type="text"]::placeholder { color: var(--dim); }
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     <input type="text" id="search" placeholder="Search strain or brand…">
   </div>
-  <button class="btn-clear hidden" id="btn-clear" onclick="resetFilters()">✕ Clear</button>
+  <button class="btn-clear hidden" id="btn-clear" onclick="clearFilters()">✕ Clear</button>
   <button class="btn-filter" id="btn-filter" onclick="openFilterPanel()">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
     Filter <span class="filter-dot"></span>
   </button>
-  <button class="btn-add" onclick="openAdd()">+ Add</button>
-</div>
+  <button class="btn-add" onclick="openAdd()">+ Add</button></div>
 
 <div class="overlay-bg" id="filter-panel-bg" onclick="if(event.target===this)closeFilterPanel()">
   <div class="filter-panel" onclick="event.stopPropagation()">
@@ -605,9 +604,12 @@ function updateChipUI() {
     if (activeChips.has(k)) el.classList.add(map[k]);
   });
 }
+function isDefaultFilter() {
+  return activeChips.size === 1 && activeChips.has('unrated') && !document.getElementById('filter-brand').value && !document.getElementById('search').value.trim();
+}
 function updateFilterBtn() {
-  const active = activeChips.size > 0 || !!document.getElementById('filter-brand').value;
-  document.getElementById('btn-filter').classList.toggle('active', active);
+  const active = activeChips.size > 0 || !!document.getElementById('filter-brand').value || !!document.getElementById('search').value.trim();
+  document.getElementById('btn-filter').classList.toggle('active', activeChips.size > 0 || !!document.getElementById('filter-brand').value);
   document.getElementById('btn-clear').classList.toggle('hidden', !active);
 }
 function openFilterPanel()  { document.getElementById('filter-panel-bg').classList.add('open'); }
@@ -615,13 +617,14 @@ function closeFilterPanel() { document.getElementById('filter-panel-bg').classLi
 function clearFilters() {
   activeChips.clear();
   document.getElementById('filter-brand').value = '';
+  document.getElementById('search').value = '';
   updateChipUI(); updateFilterBtn(); render();
 }
 function resetFilters() {
   activeChips.clear();
+  activeChips.add('unrated');
   document.getElementById('filter-brand').value = '';
   document.getElementById('search').value = '';
-  activeChips.add('unrated');
   updateChipUI(); updateFilterBtn(); render();
 }
 
@@ -795,7 +798,7 @@ async function doLogout() {
 }
 
 document.getElementById('login-password').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
-document.getElementById('search').addEventListener('input', render);
+document.getElementById('search').addEventListener('input', () => { updateFilterBtn(); render(); });
 document.getElementById('search').addEventListener('keydown', e => { if (e.key === 'Enter') e.target.blur(); });
 
 sb.auth.getSession().then(({ data: { session } }) => {

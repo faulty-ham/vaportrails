@@ -91,7 +91,8 @@ select.field {
 /* ── CONTROLS ── */
 .controls {
   padding: 12px 20px; background: var(--bg2); border-bottom: 1px solid var(--border);
-  display: flex; gap: 10px; align-items: center;
+  display: flex; gap: 10px; align-items: stretch;
+  position: sticky; top: var(--header-h, 0px); z-index: 99;
 }
 .search-wrap { position: relative; flex: 1; min-width: 0; }
 .search-wrap svg {
@@ -99,8 +100,8 @@ select.field {
   color: var(--muted); pointer-events: none;
 }
 input[type="text"] {
-  width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px;
-  padding: 9px 12px 9px 36px; color: var(--text); font-family: 'DM Sans', sans-serif;
+  width: 100%; height: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px;
+  padding: 0 12px 0 36px; color: var(--text); font-family: 'DM Sans', sans-serif;
   font-size: 16px; outline: none; transition: border-color 0.2s; -webkit-appearance: none;
 }
 input[type="text"]:focus { border-color: var(--purple); }
@@ -109,7 +110,7 @@ input[type="text"]::placeholder { color: var(--dim); }
 .btn-filter {
   background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px;
   color: var(--muted); font-size: 13px; font-family: 'DM Sans', sans-serif; font-weight: 500;
-  padding: 9px 16px; cursor: pointer; transition: all 0.15s;
+  padding: 0 16px; cursor: pointer; transition: all 0.15s;
   display: flex; align-items: center; gap: 6px; white-space: nowrap;
   -webkit-tap-highlight-color: transparent;
 }
@@ -121,7 +122,8 @@ input[type="text"]::placeholder { color: var(--dim); }
 .btn-clear {
   background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px;
   color: var(--dim); font-family: 'DM Mono', monospace; font-size: 11px;
-  padding: 9px 12px; cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  padding: 0 12px; cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  display: flex; align-items: center;
   -webkit-tap-highlight-color: transparent;
 }
 .btn-clear:hover { border-color: var(--coral); color: var(--coral); }
@@ -129,7 +131,8 @@ input[type="text"]::placeholder { color: var(--dim); }
 .btn-add {
   background: var(--amber-dim); border: 1px solid var(--amber); border-radius: 8px;
   color: var(--amber); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
-  padding: 9px 16px; cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  padding: 0 16px; cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  display: flex; align-items: center;
   -webkit-tap-highlight-color: transparent;
 }
 .btn-add:hover { background: rgba(240,168,50,0.2); }
@@ -408,7 +411,7 @@ input[type="text"]::placeholder { color: var(--dim); }
 <div class="controls">
   <div class="search-wrap">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input type="text" id="search" placeholder="Search strain or brand…">
+    <input type="text" id="search" placeholder="Search">
   </div>
   <button class="btn-clear hidden" id="btn-clear" onclick="clearFilters()">✕ Clear</button>
   <button class="btn-filter" id="btn-filter" onclick="openFilterPanel()">
@@ -428,7 +431,7 @@ input[type="text"]::placeholder { color: var(--dim); }
         <label>Rating</label>
         <div class="chip-group">
           <div class="chip" id="chip-great"   onclick="toggleChip('great')">🔥 Fire</div>
-          <div class="chip" id="chip-ok"      onclick="toggleChip('ok')">🌿 Fresh</div>
+          <div class="chip" id="chip-ok"      onclick="toggleChip('ok')">🌳 Fresh</div>
           <div class="chip" id="chip-ng"      onclick="toggleChip('ng')">🗑️ Trash</div>
           <div class="chip" id="chip-unrated" onclick="toggleChip('unrated')">— Unrated</div>
         </div>
@@ -490,7 +493,7 @@ input[type="text"]::placeholder { color: var(--dim); }
     <label>Rating</label>
     <div class="rating-options">
       <div class="rating-opt" id="opt-great"   onclick="selectRating('Great')">🔥 Fire</div>
-      <div class="rating-opt" id="opt-ok"      onclick="selectRating('OK')">🌿 Fresh</div>
+      <div class="rating-opt" id="opt-ok"      onclick="selectRating('OK')">🌳 Fresh</div>
       <div class="rating-opt" id="opt-ng"      onclick="selectRating('NG')">🗑️ Trash</div>
       <div class="rating-opt" id="opt-unrated" onclick="selectRating('')">— Unrated</div>
     </div>
@@ -662,7 +665,7 @@ function typeLabel(t) {
   return `<span class="type-label-full">${f}</span><span class="type-label-short">${s}</span>`;
 }
 function ratingEmoji(r) {
-  return r==='Great' ? '🔥' : r==='OK' ? '🌿' : r==='NG' ? '🗑️' : '<span style="color:var(--dim);font-size:12px">—</span>';
+  return r==='Great' ? '🔥' : r==='OK' ? '🌳' : r==='NG' ? '🗑️' : '<span style="color:var(--dim);font-size:12px">—</span>';
 }
 function esc(s) { return (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 
@@ -802,6 +805,14 @@ async function doLogout() {
 });
 document.getElementById('search').addEventListener('input', () => { updateFilterBtn(); render(); });
 document.getElementById('search').addEventListener('keydown', e => { if (e.key === 'Enter') e.target.blur(); });
+
+// Set controls sticky offset to actual header height
+function setHeaderHeight() {
+  const h = document.querySelector('.header').offsetHeight;
+  document.documentElement.style.setProperty('--header-h', h + 'px');
+}
+setHeaderHeight();
+window.addEventListener('resize', setHeaderHeight);
 
 sb.auth.getSession().then(({ data: { session } }) => {
   if (session) { showApp(); loadData(); } else showLogin();

@@ -416,8 +416,8 @@ input[type="text"]::placeholder { color: var(--dim); }
   </button>
   <button class="btn-add" onclick="openAdd()">+ Add</button></div>
 
-<div class="overlay-bg" id="filter-panel-bg" onclick="if(event.target===this)closeFilterPanel()">
-  <div class="filter-panel" onclick="event.stopPropagation()">
+<div class="overlay-bg" id="filter-panel-bg">
+  <div class="filter-panel" id="filter-panel-inner">
     <div class="filter-panel-top">
       <h3>Filters</h3>
       <div class="filter-close-btn" onclick="closeFilterPanel()">✕</div>
@@ -467,8 +467,8 @@ input[type="text"]::placeholder { color: var(--dim); }
 </div>
 <div class="empty" id="empty" style="display:none">No strains match your filters.</div>
 
-<div class="modal-bg" id="modal" onclick="if(event.target===this)closeModal()">
-  <div class="modal" onclick="event.stopPropagation()">
+<div class="modal-bg" id="modal">
+  <div class="modal" id="modal-inner">
     <div class="modal-header">
       <div class="modal-brand"  id="modal-brand-label"></div>
       <div class="modal-strain" id="modal-strain-label"></div>
@@ -502,8 +502,8 @@ input[type="text"]::placeholder { color: var(--dim); }
   </div>
 </div>
 
-<div class="overlay-bg" id="notes-modal-bg" onclick="if(event.target===this)closeNotes()">
-  <div class="notes-modal" onclick="event.stopPropagation()">
+<div class="overlay-bg" id="notes-modal-bg">
+  <div class="notes-modal" id="notes-modal-inner">
     <div class="notes-modal-top">
       <h3>Notes</h3>
       <div class="filter-close-btn" onclick="closeNotes()">✕</div>
@@ -791,7 +791,18 @@ async function doLogout() {
   showLogin();
 }
 
-document.getElementById('login-password').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+// ── Drag-safe backdrop dismissal ──
+// Only close when both mousedown AND mouseup land on the backdrop itself
+['filter-panel-bg','modal','notes-modal-bg'].forEach(id => {
+  const bg = document.getElementById(id);
+  const closeFn = { 'filter-panel-bg': closeFilterPanel, 'modal': closeModal, 'notes-modal-bg': closeNotes };
+  let downOnBg = false;
+  bg.addEventListener('mousedown', e => { downOnBg = e.target === bg; });
+  bg.addEventListener('mouseup',   e => { if (downOnBg && e.target === bg) closeFn[id](); downOnBg = false; });
+  // Touch: tap on bg closes, but touchmove (scroll/drag) does not
+  bg.addEventListener('touchstart', e => { downOnBg = e.target === bg; }, { passive: true });
+  bg.addEventListener('touchend',   e => { if (downOnBg && e.target === bg) closeFn[id](); downOnBg = false; });
+});
 document.getElementById('search').addEventListener('input', () => { updateFilterBtn(); render(); });
 document.getElementById('search').addEventListener('keydown', e => { if (e.key === 'Enter') e.target.blur(); });
 

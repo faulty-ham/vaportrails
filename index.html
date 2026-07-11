@@ -117,7 +117,14 @@ input[type="text"]::placeholder { color: var(--dim); }
 .filter-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--amber); display: none; }
 .btn-filter.active .filter-dot { display: block; }
 
-.btn-add {
+.btn-clear {
+  background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px;
+  color: var(--dim); font-family: 'DM Mono', monospace; font-size: 11px;
+  padding: 9px 12px; cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-clear:hover { border-color: var(--coral); color: var(--coral); }
+.btn-clear.hidden { display: none; }
   background: var(--amber-dim); border: 1px solid var(--amber); border-radius: 8px;
   color: var(--amber); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
   padding: 9px 16px; cursor: pointer; transition: all 0.15s; white-space: nowrap;
@@ -386,7 +393,7 @@ input[type="text"]::placeholder { color: var(--dim); }
 </div>
 
 <header class="header">
-  <div class="logo">VaporTrails</div>
+  <div class="logo" onclick="location.reload()" style="cursor:pointer" title="Refresh">VaporTrails</div>
   <div class="header-stats">
     <button class="btn-notes" onclick="openNotes()">Notes</button>
     <div class="stat-pill"><strong id="stat-total">0</strong> strains</div>
@@ -401,6 +408,7 @@ input[type="text"]::placeholder { color: var(--dim); }
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     <input type="text" id="search" placeholder="Search strain or brand…">
   </div>
+  <button class="btn-clear hidden" id="btn-clear" onclick="resetFilters()">✕ Clear</button>
   <button class="btn-filter" id="btn-filter" onclick="openFilterPanel()">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
     Filter <span class="filter-dot"></span>
@@ -532,7 +540,10 @@ async function loadData() {
     return;
   }
   data = rows;
+  activeChips.add('unrated');
   populateBrandFilter();
+  updateChipUI();
+  updateFilterBtn();
   render();
 }
 
@@ -597,12 +608,20 @@ function updateChipUI() {
 function updateFilterBtn() {
   const active = activeChips.size > 0 || !!document.getElementById('filter-brand').value;
   document.getElementById('btn-filter').classList.toggle('active', active);
+  document.getElementById('btn-clear').classList.toggle('hidden', !active);
 }
 function openFilterPanel()  { document.getElementById('filter-panel-bg').classList.add('open'); }
 function closeFilterPanel() { document.getElementById('filter-panel-bg').classList.remove('open'); updateFilterBtn(); }
 function clearFilters() {
   activeChips.clear();
   document.getElementById('filter-brand').value = '';
+  updateChipUI(); updateFilterBtn(); render();
+}
+function resetFilters() {
+  activeChips.clear();
+  document.getElementById('filter-brand').value = '';
+  document.getElementById('search').value = '';
+  activeChips.add('unrated');
   updateChipUI(); updateFilterBtn(); render();
 }
 

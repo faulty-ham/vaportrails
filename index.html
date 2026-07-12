@@ -85,10 +85,10 @@ select.field {
   position: sticky; top: 0; z-index: 100;
 }
 body.standalone .header {
-  padding-top: max(54px, env(safe-area-inset-top, 54px));
+  padding-top: max(64px, env(safe-area-inset-top, 64px));
 }
 @media all and (display-mode: standalone) {
-  .header { padding-top: max(54px, env(safe-area-inset-top, 54px)); }
+  .header { padding-top: max(64px, env(safe-area-inset-top, 64px)); }
 }
 .logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 3px; color: var(--amber); line-height: 1; }
 .header-stats { margin-left: auto; display: flex; gap: 8px; align-items: center; }
@@ -547,12 +547,19 @@ const SUPABASE_URL  = 'https://oapjuqurbfimxopjpqgj.supabase.co';
 const SUPABASE_ANON = 'sb_publishable_B6dXNLCuGE3n3z5qazgdLg_ZE-S4ZLr';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-// Detect standalone (home screen app) mode on iOS and Android
+// Detect standalone mode — works for Safari and Chrome on iOS
 if (
   window.navigator.standalone === true ||
-  window.matchMedia('(display-mode: standalone)').matches
+  window.matchMedia('(display-mode: standalone)').matches ||
+  document.referrer.startsWith('android-app://')
 ) {
   document.body.classList.add('standalone');
+}
+// Chrome on iOS fallback — check if launched without browser chrome
+// by comparing window.innerHeight to screen.height
+if (!document.body.classList.contains('standalone')) {
+  const ratio = window.innerHeight / window.screen.height;
+  if (ratio > 0.9) document.body.classList.add('standalone');
 }
 
 let data = [], currentSort = 'brand', sortDir = 'asc';

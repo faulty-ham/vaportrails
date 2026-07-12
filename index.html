@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0">
 <title>VaporTrails</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIyIiBmaWxsPSIjMTMxMzFjIi8+CiAgPHRleHQgeD0iNTAiIHk9IjY4IiBmb250LWZhbWlseT0iR2VvcmdpYSwgc2VyaWYiIGZvbnQtc2l6ZT0iNTQiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjZjBhODMyIiBsZXR0ZXItc3BhY2luZz0iLTIiPlZUPC90ZXh0Pgo8L3N2Zz4K">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="VaporTrails">
+<meta name="theme-color" content="#13131c">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -181,13 +187,14 @@ input[type="text"]::placeholder { color: var(--dim); }
   white-space: normal; overflow: visible; text-overflow: unset;
   padding-right: 10px; word-break: break-word;
 }
-.row-brand  { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; }
-.row-strain { font-size: 13px; font-weight: 500; }
+.row-brand  { font-size: 13px; font-weight: 500; color: var(--text); }
+.row-strain { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; }
 
 .type-badge {
   font-size: 10px; font-family: 'DM Mono', monospace; font-weight: 500;
-  padding: 3px 7px; border-radius: 100px; border: 1px solid;
+  padding: 0 7px; line-height: 1.8; border-radius: 100px; border: 1px solid;
   letter-spacing: 0.5px; display: inline-block; white-space: nowrap;
+  margin-top: 0;
 }
 .type-I  { color: var(--c-I);  background: var(--c-I-dim);  border-color: var(--c-I-bd); }
 .type-H  { color: var(--c-H);  background: var(--c-H-dim);  border-color: var(--c-H-bd); }
@@ -196,7 +203,7 @@ input[type="text"]::placeholder { color: var(--dim); }
 .type-SH { color: var(--c-SH); background: var(--c-SH-dim); border-color: var(--c-SH-bd); }
 .type-unknown { color: var(--muted); background: transparent; border-color: var(--border); }
 
-.rating-emoji { font-size: 17px; text-align: center; line-height: 1; user-select: none; }
+.rating-emoji { font-size: 17px; text-align: center; line-height: 1.3; user-select: none; }
 .type-label-full  { display: inline; }
 .type-label-short { display: none; }
 .empty { padding: 60px 20px; text-align: center; color: var(--dim); font-family: 'DM Mono', monospace; font-size: 13px; }

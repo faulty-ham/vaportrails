@@ -24,8 +24,8 @@
   --c-SH: #f0a832; --c-SH-dim: rgba(240,168,50,0.12);  --c-SH-bd: rgba(240,168,50,0.2);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 165%; }
-@media (min-width: 481px) { html { font-size: 200%; } }
+html { font-size: 180%; }
+@media (min-width: 481px) { html { font-size: 250%; } }
 body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100dvh; overflow-x: hidden; }
 
 /* ── SHARED ── */
@@ -91,11 +91,11 @@ select.field {
 
 /* ── CONTROLS ── */
 .controls {
-  padding: 12px 20px; background: var(--bg2); border-bottom: 1px solid var(--border);
-  display: flex; gap: 10px; align-items: stretch;
+  padding: 10px 20px; background: var(--bg2); border-bottom: 1px solid var(--border);
+  display: flex; gap: 10px; align-items: center; height: 60px;
   position: sticky; top: var(--header-h, 0px); z-index: 99;
 }
-.search-wrap { position: relative; flex: 1; min-width: 0; }
+.search-wrap { position: relative; flex: 1; min-width: 0; align-self: stretch; display: flex; align-items: center; }
 .search-wrap svg {
   position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
   color: var(--muted); pointer-events: none;
@@ -104,6 +104,7 @@ input[type="text"] {
   width: 100%; height: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px;
   padding: 0 12px 0 36px; color: var(--text); font-family: 'DM Sans', sans-serif;
   font-size: 16px; outline: none; transition: border-color 0.2s; -webkit-appearance: none;
+  line-height: normal;
 }
 input[type="text"]:focus { border-color: var(--purple); }
 input[type="text"]::placeholder { color: var(--dim); }
@@ -111,7 +112,7 @@ input[type="text"]::placeholder { color: var(--dim); }
 .btn-filter {
   background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px;
   color: var(--muted); font-size: 13px; font-family: 'DM Sans', sans-serif; font-weight: 500;
-  padding: 0 16px; cursor: pointer; transition: all 0.15s;
+  padding: 0 16px; height: 100%; cursor: pointer; transition: all 0.15s;
   display: flex; align-items: center; gap: 6px; white-space: nowrap;
   -webkit-tap-highlight-color: transparent;
 }
@@ -123,7 +124,7 @@ input[type="text"]::placeholder { color: var(--dim); }
 .btn-clear {
   background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px;
   color: var(--dim); font-family: 'DM Mono', monospace; font-size: 11px;
-  padding: 0 12px; cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  padding: 0 12px; height: 100%; cursor: pointer; transition: all 0.15s; white-space: nowrap;
   display: flex; align-items: center;
   -webkit-tap-highlight-color: transparent;
 }
@@ -132,7 +133,7 @@ input[type="text"]::placeholder { color: var(--dim); }
 .btn-add {
   background: var(--amber-dim); border: 1px solid var(--amber); border-radius: 8px;
   color: var(--amber); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
-  padding: 0 16px; cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  padding: 0 16px; height: 100%; cursor: pointer; transition: all 0.15s; white-space: nowrap;
   display: flex; align-items: center;
   -webkit-tap-highlight-color: transparent;
 }
@@ -169,7 +170,7 @@ input[type="text"]::placeholder { color: var(--dim); }
 .col-header-rating { justify-content: center; }
 
 .row {
-  align-items: center; padding: 11px 12px; border-radius: 8px;
+  align-items: start; padding: 11px 12px; border-radius: 8px;
   cursor: pointer; transition: background 0.12s; border-bottom: 1px solid var(--border);
   -webkit-tap-highlight-color: transparent;
 }
@@ -177,7 +178,8 @@ input[type="text"]::placeholder { color: var(--dim); }
 .row:hover, .row:active { background: var(--surface2); }
 
 .row-brand, .row-strain {
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 10px;
+  white-space: normal; overflow: visible; text-overflow: unset;
+  padding-right: 10px; word-break: break-word;
 }
 .row-brand  { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; }
 .row-strain { font-size: 13px; font-weight: 500; }

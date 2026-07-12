@@ -84,6 +84,9 @@ select.field {
   display: flex; align-items: center; gap: 12px;
   position: sticky; top: 0; z-index: 100;
 }
+body.standalone .header {
+  padding-top: max(54px, env(safe-area-inset-top, 54px));
+}
 @media all and (display-mode: standalone) {
   .header { padding-top: max(54px, env(safe-area-inset-top, 54px)); }
 }
@@ -200,7 +203,7 @@ input[type="text"]::placeholder { color: var(--dim); }
   font-size: 10px; font-family: 'DM Mono', monospace; font-weight: 500;
   padding: 0 7px; line-height: 1.8; border-radius: 100px; border: 1px solid;
   letter-spacing: 0.5px; display: inline-block; white-space: nowrap;
-  margin-top: 0;
+  width: fit-content; align-self: start;
 }
 .type-I  { color: var(--c-I);  background: var(--c-I-dim);  border-color: var(--c-I-bd); }
 .type-H  { color: var(--c-H);  background: var(--c-H-dim);  border-color: var(--c-H-bd); }
@@ -543,6 +546,14 @@ input[type="text"]::placeholder { color: var(--dim); }
 const SUPABASE_URL  = 'https://oapjuqurbfimxopjpqgj.supabase.co';
 const SUPABASE_ANON = 'sb_publishable_B6dXNLCuGE3n3z5qazgdLg_ZE-S4ZLr';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+// Detect standalone (home screen app) mode on iOS and Android
+if (
+  window.navigator.standalone === true ||
+  window.matchMedia('(display-mode: standalone)').matches
+) {
+  document.body.classList.add('standalone');
+}
 
 let data = [], currentSort = 'brand', sortDir = 'asc';
 let editId = null, selectedRating = '', selectedType = '', dataLoaded = false;

@@ -422,8 +422,6 @@ input[type="text"]::placeholder { color: var(--dim); }
   <div class="header-stats">
     <button class="btn-notes" onclick="openNotes()">Notes</button>
     <div class="stat-pill"><strong id="stat-total">0</strong> strains</div>
-    <div class="stat-pill"><strong id="stat-great" style="color:var(--teal)">0</strong> 🔥</div>
-    <div class="stat-pill"><strong id="stat-ng" style="color:var(--coral)">0</strong> 🗑️</div>
     <button class="btn-logout" onclick="doLogout()">Sign Out</button>
   </div>
 </header>
@@ -708,8 +706,6 @@ function esc(s) { return (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;
 function render() {
   const filtered = getSorted(getFiltered());
   document.getElementById('stat-total').textContent = data.length;
-  document.getElementById('stat-great').textContent = data.filter(d => d.rating==='Great').length;
-  document.getElementById('stat-ng').textContent    = data.filter(d => d.rating==='NG').length;
   document.getElementById('result-text').innerHTML  = `Showing <strong>${filtered.length}</strong> of <strong>${data.length}</strong> strains`;
   const empty = document.getElementById('empty');
   if (!filtered.length) { document.getElementById('list-body').innerHTML = ''; empty.style.display = 'block'; return; }
@@ -798,23 +794,11 @@ function openNotes() {
   document.getElementById('notes-modal-bg').classList.add('open');
   const ta = document.getElementById('notes-textarea');
   ta.value = localStorage.getItem(NOTES_KEY) || '';
-  sb.auth.getSession().then(({ data: { session } }) => {
-    console.log('Notes open - session:', session ? 'logged in as ' + session.user.email : 'NO SESSION');
-    showStatus('Loading notes…');
-    sb.from('notes').select('content').eq('id', 1).single()
-      .then(({ data: row, error }) => {
-        console.log('Notes fetch - row:', row, 'error:', error);
-        if (error) {
-          showStatus('Notes error: ' + error.message, true);
-        } else if (row) {
-          ta.value = row.content || '';
-          localStorage.setItem(NOTES_KEY, row.content || '');
-          hideStatus();
-        } else {
-          showStatus('Notes: no row found', true);
-        }
-      });
-  });
+  sb.from('notes').select('content').eq('id', 1).single()
+    .then(({ data: row, error }) => {
+      if (error) showStatus('Notes error: ' + error.message, true);
+      else if (row) { ta.value = row.content || ''; localStorage.setItem(NOTES_KEY, row.content || ''); }
+    });
   setTimeout(() => ta.focus(), 100);
 }
 function closeNotes() { document.getElementById('notes-modal-bg').classList.remove('open'); }

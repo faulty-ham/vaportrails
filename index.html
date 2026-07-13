@@ -798,19 +798,23 @@ function openNotes() {
   document.getElementById('notes-modal-bg').classList.add('open');
   const ta = document.getElementById('notes-textarea');
   ta.value = localStorage.getItem(NOTES_KEY) || '';
-  showStatus('Loading notes…');
-  sb.from('notes').select('content').eq('id', 1).single()
-    .then(({ data: row, error }) => {
-      if (error) {
-        showStatus('Notes load error: ' + error.message, true);
-      } else if (row && row.content !== undefined) {
-        ta.value = row.content;
-        localStorage.setItem(NOTES_KEY, row.content);
-        hideStatus();
-      } else {
-        showStatus('No notes row found in Supabase', true);
-      }
-    });
+  sb.auth.getSession().then(({ data: { session } }) => {
+    console.log('Notes open - session:', session ? 'logged in as ' + session.user.email : 'NO SESSION');
+    showStatus('Loading notes…');
+    sb.from('notes').select('content').eq('id', 1).single()
+      .then(({ data: row, error }) => {
+        console.log('Notes fetch - row:', row, 'error:', error);
+        if (error) {
+          showStatus('Notes error: ' + error.message, true);
+        } else if (row) {
+          ta.value = row.content || '';
+          localStorage.setItem(NOTES_KEY, row.content || '');
+          hideStatus();
+        } else {
+          showStatus('Notes: no row found', true);
+        }
+      });
+  });
   setTimeout(() => ta.focus(), 100);
 }
 function closeNotes() { document.getElementById('notes-modal-bg').classList.remove('open'); }

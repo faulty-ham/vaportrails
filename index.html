@@ -174,7 +174,7 @@ input[type="text"]::placeholder { color: var(--dim); }
 .list { padding: 0 20px 40px; }
 .list-header, .row {
   display: grid;
-  grid-template-columns: 1fr 1fr 140px 44px;
+  grid-template-columns: 0.7fr 0.7fr 200px 80px;
   padding: 8px 12px;
 }
 .list-header {
@@ -457,23 +457,23 @@ input[type="text"]::placeholder { color: var(--dim); }
       <div class="filter-close-btn" onclick="closeFilterPanel()">✕</div>
     </div>
     <div class="filter-sections">
-      <div class="filter-section">
-        <label>Rating</label>
-        <div class="chip-group">
-          <div class="chip" id="chip-great"   onclick="toggleChip('great')">🔥 Fire</div>
-          <div class="chip" id="chip-ok"      onclick="toggleChip('ok')">🌳 Fresh</div>
-          <div class="chip" id="chip-ng"      onclick="toggleChip('ng')">🗑️ Trash</div>
-          <div class="chip" id="chip-unrated" onclick="toggleChip('unrated')">— Unrated</div>
+      <div class="filter-section filter-section-brand">
+        <label>Type</label>
+        <div class="type-btn-group">
+          <button class="type-btn" id="chip-I"  onclick="toggleChip('I')">I</button>
+          <button class="type-btn" id="chip-IH" onclick="toggleChip('IH')">I-H</button>
+          <button class="type-btn" id="chip-H"  onclick="toggleChip('H')">H</button>
+          <button class="type-btn" id="chip-SH" onclick="toggleChip('SH')">S-H</button>
+          <button class="type-btn" id="chip-S"  onclick="toggleChip('S')">S</button>
         </div>
       </div>
-      <div class="filter-section">
-        <label>Type</label>
-        <div class="chip-group">
-          <div class="chip" id="chip-I"  onclick="toggleChip('I')">Indica</div>
-          <div class="chip" id="chip-IH" onclick="toggleChip('IH')">Indica Hybrid</div>
-          <div class="chip" id="chip-H"  onclick="toggleChip('H')">Hybrid</div>
-          <div class="chip" id="chip-SH" onclick="toggleChip('SH')">Sativa Hybrid</div>
-          <div class="chip" id="chip-S"  onclick="toggleChip('S')">Sativa</div>
+      <div class="filter-section filter-section-brand">
+        <label>Rating</label>
+        <div class="rating-options">
+          <div class="rating-opt" id="chip-great"   onclick="toggleChip('great')">🔥 Fire</div>
+          <div class="rating-opt" id="chip-ok"      onclick="toggleChip('ok')">🌳 Fresh</div>
+          <div class="rating-opt" id="chip-ng"      onclick="toggleChip('ng')">🗑️ Trash</div>
+          <div class="rating-opt" id="chip-unrated" onclick="toggleChip('unrated')">— Unrated</div>
         </div>
       </div>
       <div class="filter-section filter-section-brand">
@@ -639,12 +639,21 @@ function toggleChip(key) {
   updateChipUI(); updateFilterBtn(); render();
 }
 function updateChipUI() {
-  const map = { great:'on-great', ok:'on-ok', ng:'on-ng', unrated:'on', I:'on', H:'on', S:'on', IH:'on', SH:'on' };
-  Object.keys(map).forEach(k => {
+  // Type buttons in filter panel
+  const typeMap = { I:'sel-I', IH:'sel-IH', H:'sel-H', SH:'sel-SH', S:'sel-S' };
+  Object.keys(typeMap).forEach(k => {
     const el = document.getElementById('chip-' + k);
     if (!el) return;
-    el.classList.remove('on','on-great','on-ok','on-ng');
-    if (activeChips.has(k)) el.classList.add(map[k]);
+    el.className = 'type-btn';
+    if (activeChips.has(k)) el.classList.add(typeMap[k]);
+  });
+  // Rating opts in filter panel
+  const ratingMap = { great:'sel-great', ok:'sel-ok', ng:'sel-ng', unrated:'sel-unrated' };
+  Object.keys(ratingMap).forEach(k => {
+    const el = document.getElementById('chip-' + k);
+    if (!el) return;
+    el.className = 'rating-opt';
+    if (activeChips.has(k)) el.classList.add(ratingMap[k]);
   });
 }
 function isDefaultFilter() {

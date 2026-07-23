@@ -564,7 +564,7 @@ input[type="text"]::placeholder { color: var(--dim); }
       </div>
       <div class="filter-section filter-section-brand">
         <label>Brand</label>
-        <input type="text" id="filter-brand" placeholder="Type a brand name…" list="brand-list" autocomplete="off" style="padding:10px 14px;font-size:16px;border-radius:8px;border:1px solid var(--border2);background:var(--bg3);color:var(--text);width:100%;outline:none;font-family:'DM Sans',sans-serif;transition:border-color 0.2s;" oninput="updateFilterBtn();render()">
+        <input type="text" id="filter-brand" placeholder="Type a brand name…" list="brand-list" autocomplete="on" style="padding:10px 14px;font-size:16px;border-radius:8px;border:1px solid var(--border2);background:var(--bg3);color:var(--text);width:100%;outline:none;font-family:'DM Sans',sans-serif;transition:border-color 0.2s;" oninput="updateFilterBtn();render()">
       </div>
     </div>
     <div class="filter-panel-actions">
@@ -601,7 +601,7 @@ input[type="text"]::placeholder { color: var(--dim); }
         <div class="detail-strain" id="detail-strain-label"></div>
       </div>
       <label>Brand</label>
-      <input type="text" id="detail-edit-brand" placeholder="Brand name" list="brand-list" autocomplete="off">
+      <input type="text" id="detail-edit-brand" placeholder="Brand name" list="brand-list">
       <label>Strain</label>
       <input type="text" id="detail-edit-strain" placeholder="Strain name">
       <label>Type</label>
@@ -636,7 +636,7 @@ input[type="text"]::placeholder { color: var(--dim); }
       <div class="modal-strain" id="modal-strain-label"></div>
     </div>
     <label>Brand</label>
-    <input type="text" id="edit-brand" placeholder="Brand name" list="brand-list" autocomplete="off">
+    <input type="text" id="edit-brand" placeholder="Brand name" list="brand-list">
     <datalist id="brand-list"></datalist>
     <label>Strain</label>
     <input type="text" id="edit-strain" placeholder="Strain name">

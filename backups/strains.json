@@ -322,7 +322,7 @@
  {"id":321,"brand":"Pure Beauty 👀","strain":"Honey Runtz","type":"I-H","rating":"OK","notes":""}, 
  {"id":322,"brand":"Pure Beauty 👀","strain":"Lemon Head","type":"S-H","rating":"OK","notes":""}, 
  {"id":323,"brand":"Pure Beauty 👀","strain":"Sea Star","type":"I","rating":"Great","notes":""}, 
- {"id":324,"brand":"Pure Beauty 👀","strain":"Tangimal","type":"S-H","rating":"Great","notes":""}, 
+ {"id":324,"brand":"Pure Beauty 👀","strain":"Tangimal","type":"S-H","rating":"OK","notes":""}, 
  {"id":325,"brand":"Richie Rich","strain":"Purple Cakebatter","type":"H","rating":"Great","notes":""}, 
  {"id":326,"brand":"Royal Key","strain":"I.O.S. OG","type":"H","rating":"NG","notes":""}, 
  {"id":327,"brand":"Saucey","strain":"Triple F'n OG","type":"I-H","rating":"Great","notes":""}, 
@@ -421,7 +421,8 @@
  {"id":420,"brand":"Fig Farms 🌿","strain":"Grapefruit Giggles","type":"S-H","rating":"OK","notes":""}, 
  {"id":421,"brand":"Fig Farms 🌿","strain":"Zhampu","type":"H","rating":"Great","notes":""}, 
  {"id":422,"brand":"Fig Farms 🌿","strain":"Strawberry Guava","type":"H","rating":"OK","notes":""}, 
- {"id":423,"brand":"Upnorth","strain":"Humboldt OG","type":"I","rating":"","notes":""}, 
+ {"id":423,"brand":"Upnorth","strain":"Humboldt OG","type":"I","rating":"OK","notes":""}, 
  {"id":424,"brand":"Wizard Trees🧙🏻‍♂️","strain":"Smoothie","type":"H","rating":"","notes":""}, 
  {"id":425,"brand":"Cam ꕥ","strain":"Peak Pressure","type":"I","rating":"","notes":""}, 
- {"id":426,"brand":"Snowtill ❄️","strain":"Galactic","type":"I","rating":"Great","notes":""}]
+ {"id":426,"brand":"Snowtill ❄️","strain":"Galactic","type":"I","rating":"Great","notes":""}, 
+ {"id":427,"brand":"Cam ꕥ","strain":"Laughing Gas","type":"H","rating":"","notes":""}]

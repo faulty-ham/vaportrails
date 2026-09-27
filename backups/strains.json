@@ -435,10 +435,14 @@
  {"id":434,"brand":"Wizard Trees🧙🏻‍♂️","strain":"Antidote","type":"H","rating":"OK","notes":""}, 
  {"id":435,"brand":"Green Dawg","strain":"Hawg","type":"H","rating":"OK","notes":""}, 
  {"id":436,"brand":"3C","strain":"Sasquatch Sap","type":"H","rating":"NG","notes":"Old package, try again"}, 
- {"id":437,"brand":"Maven Genetics","strain":"SFV OG","type":"H","rating":"","notes":""}, 
+ {"id":437,"brand":"Maven Genetics","strain":"SFV OG","type":"H","rating":"NG","notes":""}, 
  {"id":438,"brand":"Sticky Status","strain":"K1 OG","type":"I-H","rating":"Great","notes":""}, 
- {"id":439,"brand":"Cam ꕥ","strain":"Coconut Milk","type":"I","rating":"","notes":""}, 
+ {"id":439,"brand":"Cam ꕥ","strain":"Coconut Milk","type":"I","rating":"NG","notes":""}, 
  {"id":440,"brand":"Sticky Status","strain":"Snow White","type":"S-H","rating":"NG","notes":""}, 
  {"id":441,"brand":"Sticky Status","strain":"Princess Cut OG","type":"I-H","rating":"NG","notes":"Old packaging"}, 
  {"id":442,"brand":"Wizard Trees🧙🏻‍♂️","strain":"Nebula","type":"H","rating":"","notes":""}, 
- {"id":443,"brand":"Cam ꕥ","strain":"Blue Lobster","type":"I","rating":"","notes":""}]
+ {"id":443,"brand":"Cam ꕥ","strain":"Blue Lobster","type":"I","rating":"","notes":""}, 
+ {"id":444,"brand":"710 Labs","strain":"LMNO-Z","type":"H","rating":"","notes":""}, 
+ {"id":445,"brand":"Wizard Trees🧙🏻‍♂️","strain":"New Yorker","type":"S","rating":"","notes":""}, 
+ {"id":446,"brand":"Wizard Trees🧙🏻‍♂️","strain":"Gas Gimlet","type":"H","rating":"","notes":""}, 
+ {"id":447,"brand":"Wizard Trees🧙🏻‍♂️","strain":"Zang Banger","type":"H","rating":"","notes":""}]

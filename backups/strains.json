@@ -288,7 +288,7 @@
  {"id":287,"brand":"Marathon","strain":"Marathon Cookie","type":"I","rating":"Great","notes":""}, 
  {"id":288,"brand":"Maven Genetics","strain":"Blue Lotus","type":"I","rating":"Great","notes":""}, 
  {"id":289,"brand":"Maven Genetics","strain":"FKAFL","type":"H","rating":"OK","notes":""}, 
- {"id":290,"brand":"Maven Genetics","strain":"French Lotus","type":"H","rating":"Great","notes":""}, 
+ {"id":290,"brand":"Maven Genetics","strain":"French Lotus","type":"H","rating":"OK","notes":""}, 
  {"id":291,"brand":"Maven Genetics","strain":"Orange Truffle Souffle","type":"S","rating":"NG","notes":""}, 
  {"id":292,"brand":"Maven Genetics","strain":"Peach Creme Gelato","type":"I","rating":"Great","notes":""}, 
  {"id":293,"brand":"Maven Genetics","strain":"Shangri La","type":"H","rating":"NG","notes":""}, 
@@ -445,4 +445,4 @@
  {"id":444,"brand":"710 Labs","strain":"LMNO-Z","type":"H","rating":"","notes":""}, 
  {"id":445,"brand":"Wizard Trees🧙🏻‍♂️","strain":"New Yorker","type":"S","rating":"","notes":""}, 
  {"id":446,"brand":"Wizard Trees🧙🏻‍♂️","strain":"Gas Gimlet","type":"H","rating":"","notes":""}, 
- {"id":447,"brand":"Wizard Trees🧙🏻‍♂️","strain":"Zang Banger","type":"H","rating":"","notes":""}]
+ {"id":447,"brand":"Wizard Trees🧙🏻‍♂️","strain":"Zang Banger","type":"H","rating":"NG","notes":""}]

@@ -446,8 +446,13 @@
  {"id":445,"brand":"Wizard Trees🧙🏻‍♂️","strain":"New Yorker","type":"S","rating":"OK","notes":""}, 
  {"id":446,"brand":"Wizard Trees🧙🏻‍♂️","strain":"Gas Gimlet","type":"H","rating":"OK","notes":""}, 
  {"id":447,"brand":"Wizard Trees🧙🏻‍♂️","strain":"Zang Banger","type":"H","rating":"NG","notes":""}, 
- {"id":448,"brand":"Green Dragon","strain":"Toad Venom","type":"H","rating":"","notes":""}, 
+ {"id":448,"brand":"Green Dragon","strain":"Toad Venom","type":"H","rating":"Great","notes":""}, 
  {"id":449,"brand":"Upnorth","strain":"Super Boof","type":"I","rating":"","notes":""}, 
  {"id":450,"brand":"Pure Beauty 👀","strain":"Canal St Runtz","type":"I-H","rating":"","notes":""}, 
  {"id":451,"brand":"Pure Beauty 👀","strain":"Bermuda Triangle","type":"I-H","rating":"OK","notes":""}, 
- {"id":452,"brand":"Team Elite Genetics","strain":"Lemonade Slush","type":"S","rating":"","notes":""}]
+ {"id":452,"brand":"Team Elite Genetics","strain":"Lemonade Slush","type":"S","rating":"","notes":""}, 
+ {"id":453,"brand":"Bosky","strain":"Original Z","type":"H","rating":"","notes":""}, 
+ {"id":454,"brand":"Bosky","strain":"Sweetiez","type":"H","rating":"","notes":""}, 
+ {"id":455,"brand":"Ted's Budz","strain":"41 Unicornz","type":"H","rating":"","notes":""}, 
+ {"id":456,"brand":"Northern Harvest","strain":"GMO x OZ Kush","type":"I","rating":"","notes":""}, 
+ {"id":457,"brand":"Northern Harvest","strain":"Purple Chemdawg","type":"I","rating":"","notes":""}]

@@ -281,6 +281,7 @@ input[type="text"]::placeholder { color: var(--dim); }
 .login-box input:focus { border-color: var(--purple); }
 .login-box input::placeholder { color: var(--dim); }
 .login-error { font-size: 12px; color: var(--coral); font-family: 'DM Mono', monospace; margin-top: 12px; min-height: 18px; text-align: center; }
+.forgot-link { font-size: 11px; color: var(--purple); font-family: 'DM Mono', monospace; letter-spacing: 1px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 
 /* ── MODAL ── */
 .modal-bg {
@@ -417,11 +418,49 @@ input[type="text"]::placeholder { color: var(--dim); }
   <div class="login-box">
     <div class="login-logo">VaporTrails</div>
     <div class="login-sub">FLOWER JOURNAL</div>
-    <label>Email</label>
-    <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email">
-    <label>Password</label>
-    <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
-    <button class="btn-base btn-amber" style="width:100%;margin-top:4px" onclick="doLogin()">Sign In</button>
+
+    <!-- Sign-in panel -->
+    <div id="panel-signin">
+      <label>Email</label>
+      <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email"
+             onkeydown="if(event.key==='Enter')doLogin()">
+      <label>Password</label>
+      <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password"
+             onkeydown="if(event.key==='Enter')doLogin()">
+      <button class="btn-base btn-amber" style="width:100%;margin-top:4px" onclick="doLogin()">Sign In</button>
+      <div style="text-align:center;margin-top:14px">
+        <span class="forgot-link" onclick="showForgotPanel()">Forgot password?</span>
+      </div>
+    </div>
+
+    <!-- Forgot password panel -->
+    <div id="panel-forgot" style="display:none">
+      <p style="font-size:13px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:18px;line-height:1.5">
+        Enter your email and we'll send a reset link.
+      </p>
+      <label>Email</label>
+      <input type="email" id="forgot-email" placeholder="you@example.com" autocomplete="email"
+             onkeydown="if(event.key==='Enter')doSendReset()">
+      <button class="btn-base btn-amber" style="width:100%;margin-top:4px" onclick="doSendReset()">Send Reset Link</button>
+      <div style="text-align:center;margin-top:14px">
+        <span class="forgot-link" onclick="showSigninPanel()">← Back to sign in</span>
+      </div>
+    </div>
+
+    <!-- Set new password panel (shown after clicking reset link) -->
+    <div id="panel-newpass" style="display:none">
+      <p style="font-size:13px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:18px;line-height:1.5">
+        Choose a new password.
+      </p>
+      <label>New Password</label>
+      <input type="password" id="newpass-input" placeholder="••••••••" autocomplete="new-password"
+             onkeydown="if(event.key==='Enter')doSetNewPass()">
+      <label>Confirm Password</label>
+      <input type="password" id="newpass-confirm" placeholder="••••••••" autocomplete="new-password"
+             onkeydown="if(event.key==='Enter')doSetNewPass()">
+      <button class="btn-base btn-amber" style="width:100%;margin-top:4px" onclick="doSetNewPass()">Set Password</button>
+    </div>
+
     <div class="login-error" id="login-error"></div>
   </div>
 </div>
@@ -842,6 +881,56 @@ async function doLogout() {
   showLogin();
 }
 
+/* ── Forgot / Reset password ── */
+function showSigninPanel() {
+  document.getElementById('panel-signin').style.display = '';
+  document.getElementById('panel-forgot').style.display = 'none';
+  document.getElementById('panel-newpass').style.display = 'none';
+  document.getElementById('login-error').textContent = '';
+}
+function showForgotPanel() {
+  document.getElementById('panel-signin').style.display = 'none';
+  document.getElementById('panel-forgot').style.display = '';
+  document.getElementById('panel-newpass').style.display = 'none';
+  document.getElementById('login-error').textContent = '';
+  setTimeout(() => document.getElementById('forgot-email').focus(), 50);
+}
+function showNewPassPanel() {
+  document.getElementById('panel-signin').style.display = 'none';
+  document.getElementById('panel-forgot').style.display = 'none';
+  document.getElementById('panel-newpass').style.display = '';
+  document.getElementById('login-error').textContent = '';
+  setTimeout(() => document.getElementById('newpass-input').focus(), 50);
+}
+async function doSendReset() {
+  const email = document.getElementById('forgot-email').value.trim();
+  const err   = document.getElementById('login-error');
+  err.textContent = '';
+  if (!email) { err.textContent = 'Enter your email address.'; return; }
+  const { error } = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: 'https://faulty-ham.github.io/vaportrails/'
+  });
+  if (error) { err.textContent = error.message; return; }
+  err.style.color = 'var(--green, #4ade80)';
+  err.textContent = 'Reset link sent! Check your email.';
+}
+async function doSetNewPass() {
+  const pw1 = document.getElementById('newpass-input').value;
+  const pw2 = document.getElementById('newpass-confirm').value;
+  const err = document.getElementById('login-error');
+  err.style.color = 'var(--coral)';
+  err.textContent = '';
+  if (!pw1) { err.textContent = 'Enter a new password.'; return; }
+  if (pw1 !== pw2) { err.textContent = 'Passwords do not match.'; return; }
+  const { error } = await sb.auth.updateUser({ password: pw1 });
+  if (error) { err.textContent = error.message; return; }
+  // Clear the hash so the recovery token is consumed
+  history.replaceState(null, '', window.location.pathname);
+  showSigninPanel();
+  err.style.color = 'var(--green, #4ade80)';
+  err.textContent = 'Password updated! Sign in with your new password.';
+}
+
 // ── Drag-safe backdrop dismissal ──
 // Only close when both mousedown AND mouseup land on the backdrop itself
 ['filter-panel-bg','modal','notes-modal-bg'].forEach(id => {
@@ -865,10 +954,27 @@ function setHeaderHeight() {
 setHeaderHeight();
 window.addEventListener('resize', setHeaderHeight);
 
+// Check if this is a password-reset redirect (#access_token=...&type=recovery)
+(function checkRecoveryHash() {
+  const hash = window.location.hash.slice(1);
+  const params = new URLSearchParams(hash);
+  if (params.get('type') === 'recovery') {
+    // Supabase will fire onAuthStateChange with event PASSWORD_RECOVERY
+    // Show the login screen immediately so the user sees it
+    document.getElementById('login-screen').classList.add('visible');
+  }
+})();
+
 sb.auth.getSession().then(({ data: { session } }) => {
   if (session) { showApp(); loadData(); } else showLogin();
 });
 sb.auth.onAuthStateChange((_e, session) => {
+  if (_e === 'PASSWORD_RECOVERY') {
+    // User clicked the reset link — show the new-password panel
+    showLogin();
+    showNewPassPanel();
+    return;
+  }
   if (session) { showApp(); if (!dataLoaded) loadData(); }
   else { dataLoaded = false; showLogin(); }
 });

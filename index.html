@@ -954,23 +954,18 @@ function setHeaderHeight() {
 setHeaderHeight();
 window.addEventListener('resize', setHeaderHeight);
 
-// Check if this is a password-reset redirect (#access_token=...&type=recovery)
-(function checkRecoveryHash() {
-  const hash = window.location.hash.slice(1);
-  const params = new URLSearchParams(hash);
-  if (params.get('type') === 'recovery') {
-    // Supabase will fire onAuthStateChange with event PASSWORD_RECOVERY
-    // Show the login screen immediately so the user sees it
-    document.getElementById('login-screen').classList.add('visible');
-  }
-})();
+// Detect password-reset redirect — Supabase puts #access_token=...&type=recovery in the URL
+const _hashParams = new URLSearchParams(window.location.hash.slice(1));
+const _isRecovery = _hashParams.get('type') === 'recovery';
 
-sb.auth.getSession().then(({ data: { session } }) => {
-  if (session) { showApp(); loadData(); } else showLogin();
-});
 sb.auth.onAuthStateChange((_e, session) => {
   if (_e === 'PASSWORD_RECOVERY') {
-    // User clicked the reset link — show the new-password panel
+    showLogin();
+    showNewPassPanel();
+    return;
+  }
+  if (_e === 'SIGNED_IN' && _isRecovery) {
+    // Supabase v2 sometimes fires SIGNED_IN instead of PASSWORD_RECOVERY on the reset link
     showLogin();
     showNewPassPanel();
     return;
@@ -978,6 +973,15 @@ sb.auth.onAuthStateChange((_e, session) => {
   if (session) { showApp(); if (!dataLoaded) loadData(); }
   else { dataLoaded = false; showLogin(); }
 });
+
+if (_isRecovery) {
+  // Show login screen immediately; auth event will switch to new-password panel
+  showLogin();
+} else {
+  sb.auth.getSession().then(({ data: { session } }) => {
+    if (session) { showApp(); loadData(); } else showLogin();
+  });
+}
 
 updateSortHeaders();
 </script>

@@ -206,7 +206,7 @@
  {"id":205,"brand":"Fig Farms 🌿","strain":"Lemon Cherry Gelato","type":"H","rating":"NG","notes":""}, 
  {"id":206,"brand":"Fig Farms 🌿","strain":"Lucid Blue","type":"H","rating":"NG","notes":""}, 
  {"id":207,"brand":"Fig Farms 🌿","strain":"Mad Dog 64","type":"H","rating":"NG","notes":""}, 
- {"id":208,"brand":"Fig Farms 🌿","strain":"Momochi","type":"H","rating":"Great","notes":""}, 
+ {"id":208,"brand":"Fig Farms 🌿","strain":"Momochi","type":"H","rating":"OK","notes":""}, 
  {"id":209,"brand":"Fig Farms 🌿","strain":"Moonana Chronic","type":"S-H","rating":"NG","notes":""}, 
  {"id":210,"brand":"Fig Farms 🌿","strain":"Moonana Wreck","type":"S-H","rating":"NG","notes":""}, 
  {"id":211,"brand":"Fig Farms 🌿","strain":"Peach Wreck","type":"H","rating":"NG","notes":""}, 
@@ -452,7 +452,7 @@
  {"id":451,"brand":"Pure Beauty 👀","strain":"Bermuda Triangle","type":"I-H","rating":"OK","notes":""}, 
  {"id":452,"brand":"Team Elite Genetics","strain":"Lemonade Slush","type":"S","rating":"OK","notes":""}, 
  {"id":453,"brand":"Bosky","strain":"Original Z","type":"H","rating":"OK","notes":""}, 
- {"id":454,"brand":"Bosky","strain":"Sweetiez","type":"H","rating":"","notes":""}, 
+ {"id":454,"brand":"Bosky","strain":"Sweetiez","type":"H","rating":"OK","notes":""}, 
  {"id":455,"brand":"Ted's Budz","strain":"41 Unicornz","type":"H","rating":"","notes":""}, 
  {"id":456,"brand":"Northern Harvest","strain":"GMO x OZ Kush","type":"I","rating":"","notes":""}, 
  {"id":457,"brand":"Northern Harvest","strain":"Purple Chemdawg","type":"I","rating":"","notes":""}]
